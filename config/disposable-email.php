@@ -26,7 +26,7 @@ return [
     */
     'remote_url' => [
         'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
-        'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt'
+        'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt',
     ],
 
     /*

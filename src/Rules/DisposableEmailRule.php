@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EragLaravelDisposableEmail\Rules;
@@ -20,27 +21,25 @@ final readonly class DisposableEmailRule implements ValidationRule
     /**
      * Create a new rule instance.
      *
-     * @param array<int, string> $unauthorizedEmail
+     * @param  array<int, string>  $unauthorizedEmail
      */
     public function __construct(
         array $unauthorizedEmail = []
-    )
-    {
+    ) {
         $this->unauthorizedEmail = empty($unauthorizedEmail) ? self::getDefaultUnauthorizedProviders() : $unauthorizedEmail;
     }
 
     /**
      * Run the validation rule.
      *
-     * @param Closure(string): PotentiallyTranslatedString $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $value = (string) $value;
         $value = trim($value);
 
-
-        if (!str_contains($value, '@')) {
+        if (! str_contains($value, '@')) {
             $fail(__('The :attribute must contain an "@" symbol.'));
 
             return;
@@ -66,21 +65,22 @@ final readonly class DisposableEmailRule implements ValidationRule
         return in_array($emailProvider, self::getDefaultUnauthorizedProviders(), true);
     }
 
-
     private static function getDefaultUnauthorizedProviders(): array
     {
         $directory = dirname(config('disposable-email.blacklist_file'));
 
-        $files = collect(glob($directory . '/*.txt'));
+        $files = collect(glob($directory.'/*.txt'));
 
         $allDomains = $files->flatMap(function ($file) {
             return collect(explode("\n", File::get($file)))
-                ->map(fn($line) => strtolower(trim($line)))
+                ->map(fn ($line) => strtolower(trim($line)))
                 ->map(function ($line) {
                     if (str_contains($line, '@')) {
                         [, $domain] = explode('@', $line, 2);
+
                         return trim($domain);
                     }
+
                     return $line;
                 })
                 ->filter(function ($line) {
@@ -88,7 +88,7 @@ final readonly class DisposableEmailRule implements ValidationRule
                 });
         })->unique()->values()->all();
 
-        $domainArray= [
+        $domainArray = [
             '0-mail.com',
             '027168.com',
             '0815.ru',
@@ -96,5 +96,4 @@ final readonly class DisposableEmailRule implements ValidationRule
 
         return array_values(array_unique([...$domainArray, ...$allDomains]));
     }
-
 }

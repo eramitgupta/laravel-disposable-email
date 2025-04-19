@@ -31,7 +31,7 @@ class UpdateDisposableEmailList extends Command
         $directory = dirname(config('disposable-email.blacklist_file'));
 
         // Ensure directory exists
-        if (!File::exists($directory)) {
+        if (! File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
             $this->info("Directory created at: $directory");
         }
@@ -44,7 +44,7 @@ class UpdateDisposableEmailList extends Command
 
             if ($response->successful()) {
                 // Extract original file name from URL
-                $filePath = $directory . DIRECTORY_SEPARATOR . $name.'.txt';
+                $filePath = $directory.DIRECTORY_SEPARATOR.$name.'.txt';
 
                 $raw = $response->body();
                 $cleaned = $this->normalizeToTextList($raw);
@@ -57,7 +57,6 @@ class UpdateDisposableEmailList extends Command
             }
         }
     }
-
 
     protected function normalizeToTextList(string $input): string
     {
@@ -88,6 +87,4 @@ class UpdateDisposableEmailList extends Command
 
         return implode(PHP_EOL, $unique);
     }
-
-
 }

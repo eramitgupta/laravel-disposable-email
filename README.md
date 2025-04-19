@@ -123,3 +123,24 @@ return [
     ],
 ];
 ```
+
+> ✅ **Note:** The `.txt` files from `remote_url` must follow this format:  
+> Each line should contain **only a domain name**, like:
+
+```
+0-00.usa.cc
+0-30-24.com
+0-attorney.com
+0-mail.com
+00-tv.com
+00.msk.ru
+00.pe
+00000000000.pro
+000728.xyz
+000777.info
+00082cc.com
+00082dd.com
+00082ss.com
+```
+
+If the file contains anything other than plain domains (like comments or extra data), it may cause parsing issues.

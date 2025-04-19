@@ -91,7 +91,7 @@ Or via facade:
 ```php
 use DisposableEmail;
 
-if (DisposableEmail::isDisposable('test@tempmail.com')) {
+if (DisposableEmail::isDisposable('agedmail.com')) {
     // Do something
 }
 ```
@@ -172,7 +172,7 @@ If the file contains anything other than plain domains (like comments or extra d
 |------|--------|
 | 🔹 **1** | Go to the following path: <br>**`storage/app/blacklist_file/`** |
 | 🔹 **2** | Create or edit this file: <br>**`disposable_domains.txt`** |
-| 🔹 **3** | Add your custom domains like:<br>`tempmail.com`<br>`fakemail.org`<br>`trashbox.io`<br>*(one per line)* |
+| 🔹 **3** | Add your custom domains like:<br>`abakiss.com`<br>`fakemail.org`<br>`trashbox.io`<br>*(one per line)* |
 
 ---
 

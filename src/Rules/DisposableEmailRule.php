@@ -67,7 +67,7 @@ final class DisposableEmailRule implements ValidationRule
 
     private static function getDefaultUnauthorizedProviders(): array
     {
-        $directory = dirname(config('disposable-email.blacklist_file'));
+        $directory = config('disposable-email.blacklist_file');
 
         $files = collect(glob($directory.'/*.txt'));
 
@@ -3858,6 +3858,8 @@ final class DisposableEmailRule implements ValidationRule
             'gmail.co',
             'gmail.in',
         ];
+
+        dd($allDomains);
 
         return array_values(array_unique([...$domainArray, ...$allDomains]));
     }

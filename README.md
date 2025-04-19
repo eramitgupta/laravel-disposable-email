@@ -110,15 +110,6 @@ if (DisposableEmail::isDisposable('agedmail.com')) {
 
 ---
 
-## 📦 Features
-
-- 106,580+ known disposable domains out-of-the-box
-- Uses latest community sources
-- Supports auto-syncing from remote URLs
-- Custom validation rule
-- Facade and Blade support
-
----
 
 ## 🔄 Sync From Remote (Optional)
 

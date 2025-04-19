@@ -1,0 +1,128 @@
+name: Lint Check LaravelDisposableEmail
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Ensure branch is up-to-date with main
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "❌ This branch is not up to date with main."
+            exit 1
+          fi
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, bcmath
+          tools: composer:v2
+
+      - name: Install Dependencies
+        run: composer install --no-scripts --no-interaction --prefer-dist
+
+      - name: Check code style with Pint
+        run: |
+          vendor/bin/pint --test
+          if [ $? -eq 0 ]; then
+            echo "✅ Code style is clean"
+          else
+            echo "❌ Code style issues found"
+            vendor/bin/pint --verbose
+            exit 1
+          fi
+
+      - name: Add Lint Results as PR Comment
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            ## ⚠️ PHP Code Style Check Failed
+
+            Please fix the code style issues found by Laravel Pint.
+            Run \`composer lint\` locally to see and fix the issues.
+
+            For more information about Laravel Pint, visit: https://laravel.com/docs/pint
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Add Branch Update Reminder as PR Comment
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            ## 🚨 Branch Update Required
+
+            This branch is outdated compared to \`main\`. Please update your branch by merging the latest changes from \`main\`.
+
+            Run the following command in your local branch:
+            \`\`\`sh
+            git pull origin main
+            \`\`\`
+            Then push the updated branch to the repository.
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Alert for Forked Repositories
+        if: github.event.pull_request.head.repo.fork == true
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            ## ⚠️ This PR is from a Forked Repository
+
+            Your branch is from a **forked repository**, and it might be outdated compared to the \`main\` branch.
+
+            Please make sure you have the latest updates from \`main\` before merging.
+
+            Run the following commands:
+            \`\`\`sh
+            git remote add upstream https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}.git
+            git fetch upstream
+            git merge upstream/main
+            git push origin HEAD
+            \`\`\`
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })

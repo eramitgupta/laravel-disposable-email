@@ -1,0 +1,40 @@
+{
+    "name": "erag/laravel-disposable-email",
+    "description": "A Laravel package to detect and block disposable email addresses.",
+    "license": "MIT",
+    "keywords": ["laravel", "disposable", "email", "validation"],
+    "authors": [
+        {
+            "name": "Er Amiit Gupta",
+            "email": "info.eramitgupta@gmail.com",
+            "homepage": "https://github.com/eramitgupta"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0",
+        "laravel/pint": "^1.22",
+        "illuminate/support": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/console": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/validation": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/translation": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/filesystem": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EragLaravelDisposableEmail\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EragLaravelDisposableEmail\\EragLaravelDisposableEmailServiceProvider"
+            ],
+            "aliases": {
+                "DisposableEmail": "EragLaravelDisposableEmail\\Facades\\DisposableEmail"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

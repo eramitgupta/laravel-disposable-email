@@ -115,7 +115,7 @@ php artisan erag:sync-disposable-email-list
 
 ```php
 return [
-    'blacklist_file' => storage_path('app/blacklist_file/disposable_domains.txt'),
+    'blacklist_file' => storage_path('app/blacklist_file),
 
     'remote_url' => [
         'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
@@ -144,3 +144,38 @@ return [
 ```
 
 If the file contains anything other than plain domains (like comments or extra data), it may cause parsing issues.
+
+
+## 🧩 Add Your Own Disposable Domains
+
+> ✅ **Want to block additional disposable domains?**  
+> You can **easily extend the list manually** — no coding, no command required!
+
+<div align="center">
+
+| Step | Action |
+|------|--------|
+| 🔹 **1** | Go to the following path: <br>**`storage/app/blacklist_file/`** |
+| 🔹 **2** | Create or edit this file: <br>**`disposable_domains.txt`** |
+| 🔹 **3** | Add your custom domains like:<br>`tempmail.com`<br>`fakemail.org`<br>`trashbox.io`<br>*(one per line)* |
+
+</div>
+
+---
+
+> 📌 **Important Notes:**
+- Each line must contain **only the domain name** – no extra symbols, no comments.
+- The package will **automatically detect and use** the domains from this file.
+- You **do not** need to run any Artisan command. 🧙‍♂️
+
+---
+
+### ⚙️ Ensure File Path Matches Configuration
+
+Your file path **must match** the one defined in `config/disposable-email.php`:
+
+```php
+'blacklist_file' => storage_path('app/blacklist_file'),
+```
+
+If the path or filename is different, the package will **not load** your custom list. ✅

@@ -25,6 +25,7 @@
             "EragLaravelDisposableEmail\\": "src/"
         }
     },
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
@@ -34,7 +35,5 @@
                 "DisposableEmail": "EragLaravelDisposableEmail\\Facades\\DisposableEmail"
             }
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

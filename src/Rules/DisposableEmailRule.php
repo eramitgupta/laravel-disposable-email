@@ -3859,8 +3859,6 @@ final class DisposableEmailRule implements ValidationRule
             'gmail.in',
         ];
 
-        dd($allDomains);
-
         return array_values(array_unique([...$domainArray, ...$allDomains]));
     }
 }

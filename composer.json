@@ -2,7 +2,23 @@
     "name": "erag/laravel-disposable-email",
     "description": "A Laravel package to detect and block disposable email addresses.",
     "license": "MIT",
-    "keywords": ["laravel", "disposable", "email", "validation"],
+    "keywords": [
+        "laravel",
+        "disposable",
+        "email",
+        "validation",
+        "email validator",
+        "block disposable",
+        "disposable check",
+        "laravel email rule",
+        "email blacklist",
+        "temporary email",
+        "fake email",
+        "email validation rule",
+        "laravel custom rule",
+        "email filtering",
+        "email domain checker"
+    ],
     "authors": [
         {
             "name": "Er Amiit Gupta",

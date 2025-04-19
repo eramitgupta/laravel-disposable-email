@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-final readonly class DisposableEmailRule implements ValidationRule
+final class DisposableEmailRule implements ValidationRule
 {
     /**
      * List of unauthorized email providers.

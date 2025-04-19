@@ -28,7 +28,7 @@ class UpdateDisposableEmailList extends Command
     public function handle()
     {
         $remoteUrls = config('disposable-email.remote_url');
-        $directory = dirname(config('disposable-email.blacklist_file'));
+        $directory = config('disposable-email.blacklist_file');
 
         // Ensure directory exists
         if (! File::exists($directory)) {

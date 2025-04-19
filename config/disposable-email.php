@@ -1,7 +1,5 @@
 <?php
 
-// config/disposable-email.php
-
 return [
 
     /*
@@ -13,7 +11,7 @@ return [
     | it manually or via the `erag:sync-disposable-email-list` artisan command.
     |
     */
-    'blacklist_file' => storage_path('app/blacklist_file/disposable_domains.txt'),
+    'blacklist_file' => storage_path('app/blacklist_file'),
 
     /*
     |--------------------------------------------------------------------------

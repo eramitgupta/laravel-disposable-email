@@ -94,6 +94,6 @@ final readonly class DisposableEmailRule implements ValidationRule
             '0815.ru',
         ];
 
-        return array_values(array_unique([...$domainArray, ...$allDomains]));
+        return array_values(array_unique(array_merge($domainArray, $allDomains)));
     }
 }

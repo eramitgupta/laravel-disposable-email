@@ -27,16 +27,5 @@ return [
     'remote_url' => [
         'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
         'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Auto Update Interval (in hours)
-    |--------------------------------------------------------------------------
-    |
-    | If you implement auto-syncing logic, this value defines how frequently
-    | the remote list should be fetched again.
-    |
-    */
-    'auto_update_hours' => 24,
+    ]
 ];

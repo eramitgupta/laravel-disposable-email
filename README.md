@@ -74,6 +74,13 @@ $request->validate([
 $request->validate([
     'email' => 'required|email|disposable_email',
 ]);
+
+```
+
+```php
+$request->validate([
+    'email' => ['required', 'email', 'disposable_email'],
+]);
 ```
 
 ---

@@ -33,9 +33,6 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 ---
 
 
----
-
-
 ## 🚀 Installation
 
 ```bash

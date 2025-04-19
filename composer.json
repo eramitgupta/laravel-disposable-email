@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "EragLaravelDisposableEmail\\EragLaravelDisposableEmailServiceProvider"
+                "EragLaravelDisposableEmail\\LaravelDisposableEmailServiceProvider"
             ],
             "aliases": {
                 "DisposableEmail": "EragLaravelDisposableEmail\\Facades\\DisposableEmail"

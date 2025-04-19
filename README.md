@@ -151,15 +151,12 @@ If the file contains anything other than plain domains (like comments or extra d
 > ✅ **Want to block additional disposable domains?**  
 > You can **easily extend the list manually** — no coding, no command required!
 
-<div align="center">
 
 | Step | Action |
 |------|--------|
 | 🔹 **1** | Go to the following path: <br>**`storage/app/blacklist_file/`** |
 | 🔹 **2** | Create or edit this file: <br>**`disposable_domains.txt`** |
 | 🔹 **3** | Add your custom domains like:<br>`tempmail.com`<br>`fakemail.org`<br>`trashbox.io`<br>*(one per line)* |
-
-</div>
 
 ---
 

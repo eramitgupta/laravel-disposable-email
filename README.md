@@ -19,6 +19,22 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 
 ---
 
+## ✅ Features
+
+- 🔥 **106,000+ known disposable domains** already included
+- 🧠 **Smart validation rule** for form requests
+- ⚙️ **Runtime email checking** via helper and facade
+- 🧩 **Blade directive** support for conditionals
+- 🌐 **Auto-sync with remote domain lists**
+- 📝 **Add your own custom blacklist** with ease
+- ⚡️ **Zero-configuration setup** with publishable config
+- ✅ **Compatible with Laravel 8, 9, 10, 11, and 12**
+
+---
+
+
+---
+
 
 ## 🚀 Installation
 

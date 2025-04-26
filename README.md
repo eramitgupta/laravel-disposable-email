@@ -39,6 +39,33 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 composer require erag/laravel-disposable-email
 ```
 
+
+## Register the Service Provider
+
+### For Laravel (Optional) v11.x, v12.x
+
+Ensure the service provider is registered in your `/bootstrap/providers.php` file:
+
+```php
+use EragLaravelDisposableEmail\LaravelDisposableEmailServiceProvider;
+
+return [
+    // ...
+    LaravelDisposableEmailServiceProvider::class,
+];
+```
+
+### For Laravel v8.x, v9.x, v10.x
+
+Ensure the service provider is registered in your `config/app.php` file:
+
+```php
+'providers' => [
+    // ...
+    EragLaravelDisposableEmail\LaravelDisposableEmailServiceProvider::class,
+],
+```
+
 ---
 
 ## 🛠 Configuration

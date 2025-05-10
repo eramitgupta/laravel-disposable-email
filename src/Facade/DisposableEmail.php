@@ -2,11 +2,12 @@
 
 namespace EragLaravelDisposableEmail\Facade;
 
+use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static bool isDisposable(string $email)
- * @method static \Erag\LaravelDisposableEmail\Rules\DisposableEmailRule make()
+ * @method static DisposableEmailRule make()
  */
 class DisposableEmail extends Facade
 {

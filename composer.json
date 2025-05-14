@@ -27,13 +27,13 @@
         }
     ],
     "require": {
-        "php": ">=8.0.0",
+        "php": ">=8.1.0",
         "laravel/pint": "^1.13",
-        "illuminate/support": "^8.12|^9.0|^10.0|^11.0|^12.0",
-        "illuminate/console": "^8.12|^9.0|^10.0|^11.0|^12.0",
-        "illuminate/validation": "^8.12|^9.0|^10.0|^11.0|^12.0",
-        "illuminate/translation": "^8.12|^9.0|^10.0|^11.0|^12.0",
-        "illuminate/filesystem": "^8.12|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/console": "^10.0|^11.0|^12.0",
+        "illuminate/validation": "^10.0|^11.0|^12.0",
+        "illuminate/translation": "^10.0|^11.0|^12.0",
+        "illuminate/filesystem": "^10.0|^11.0|^12.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "autoload": {

@@ -54,7 +54,7 @@ return [
 ];
 ```
 
-### For Laravel v10.x
+### For Laravelv 9.x v10.x
 
 Ensure the service provider is registered in your `config/app.php` file:
 

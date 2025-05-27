@@ -32,6 +32,69 @@ final class DisposableEmailRule implements ValidationRule
         $this->unauthorizedEmail = empty($unauthorizedEmail) ? self::getDefaultUnauthorizedProviders() : $unauthorizedEmail;
     }
 
+    /**
+     * Run the validation rule.
+     *
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        $value = (string) $value;
+        $value = trim($value);
+
+        if (!str_contains($value, '@')) {
+            $fail(__('The :attribute must contain an "@" symbol.'));
+
+            return;
+        }
+
+        [, $emailProvider] = explode('@', $value, 2);
+
+        $flippedUnauthorized = array_flip($this->unauthorizedEmail);
+
+        if (!empty($flippedUnauthorized[$emailProvider] ?? null)) {
+            $fail(__('The :attribute belongs to an unauthorized email provider.'));
+        }
+    }
+
+    public static function isDisposable(string $email): bool
+    {
+        $email = trim($email);
+
+        if (!str_contains($email, '@')) {
+            return false;
+        }
+
+        [, $emailProvider] = explode('@', $email, 2);
+
+        static $flippedProviders = null;
+        if ($flippedProviders === null) {
+            $flippedProviders = array_flip(self::getDefaultUnauthorizedProviders());
+        }
+
+        return array_key_exists($emailProvider, $flippedProviders);
+    }
+
+    public static function getDefaultUnauthorizedProviders(): array
+    {
+        if (app()->version() > "11.23") {
+            return Cache::flexible(
+                'erag-unauthorized-email-providers',
+                [config('disposable-email.cache_ttl') / 2, config('disposable-email.cache_ttl') * 2],
+                function(): array{
+                    Artisan::call(UpdateDisposableEmailList::class);
+                    return self::getUnauthorizedProviders();
+                }
+            );
+        } else {
+            return Cache::remember(
+                'erag-unauthorized-email-providers',
+                config('disposable-email.cache_ttl'),
+                fn() => self::getUnauthorizedProviders()
+            );
+        }
+    }
+
     public static function getUnauthorizedProviders(): array
     {
         $directory = config('disposable-email.blacklist_file');
@@ -659,68 +722,5 @@ final class DisposableEmailRule implements ValidationRule
         ];
 
         return array_values(array_unique([...$domainArray, ...$allDomains]));
-    }
-
-    /**
-     * Run the validation rule.
-     *
-     * @param  Closure(string): PotentiallyTranslatedString  $fail
-     */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
-    {
-        $value = (string) $value;
-        $value = trim($value);
-
-        if (!str_contains($value, '@')) {
-            $fail(__('The :attribute must contain an "@" symbol.'));
-
-            return;
-        }
-
-        [, $emailProvider] = explode('@', $value, 2);
-
-        $flippedUnauthorized = array_flip($this->unauthorizedEmail);
-
-        if (!empty($flippedUnauthorized[$emailProvider] ?? null)) {
-            $fail(__('The :attribute belongs to an unauthorized email provider.'));
-        }
-    }
-
-    public static function isDisposable(string $email): bool
-    {
-        $email = trim($email);
-
-        if (!str_contains($email, '@')) {
-            return false;
-        }
-
-        [, $emailProvider] = explode('@', $email, 2);
-
-        static $flippedProviders = null;
-        if ($flippedProviders === null) {
-            $flippedProviders = array_flip(self::getDefaultUnauthorizedProviders());
-        }
-
-        return array_key_exists($emailProvider, $flippedProviders);
-    }
-
-    private static function getDefaultUnauthorizedProviders(): array
-    {
-        if (app()->version() > "11.23") {
-            return Cache::flexible(
-                'erag-unauthorized-email-providers',
-                [config('disposable-email.cache_ttl') / 2, config('disposable-email.cache_ttl') * 2],
-                function(): array{
-                    Artisan::call(UpdateDisposableEmailList::class);
-                    return self::getUnauthorizedProviders();
-                }
-            );
-        } else {
-            return Cache::remember(
-                'erag-unauthorized-email-providers',
-                config('disposable-email.cache_ttl'),
-                fn() => self::getUnauthorizedProviders()
-            );
-        }
     }
 }

@@ -42,7 +42,7 @@ final class DisposableEmailRule implements ValidationRule
         $value = (string) $value;
         $value = trim($value);
 
-        if (!str_contains($value, '@')) {
+        if (! str_contains($value, '@')) {
             $fail(__('The :attribute must contain an "@" symbol.'));
 
             return;
@@ -52,7 +52,7 @@ final class DisposableEmailRule implements ValidationRule
 
         $flippedUnauthorized = array_flip($this->unauthorizedEmail);
 
-        if (!empty($flippedUnauthorized[$emailProvider] ?? null)) {
+        if (! empty($flippedUnauthorized[$emailProvider] ?? null)) {
             $fail(__('The :attribute belongs to an unauthorized email provider.'));
         }
     }
@@ -61,7 +61,7 @@ final class DisposableEmailRule implements ValidationRule
     {
         $email = trim($email);
 
-        if (!str_contains($email, '@')) {
+        if (! str_contains($email, '@')) {
             return false;
         }
 
@@ -77,12 +77,13 @@ final class DisposableEmailRule implements ValidationRule
 
     public static function getDefaultUnauthorizedProviders(): array
     {
-        if (app()->version() > "11.23") {
+        if (app()->version() > '11.23') {
             return Cache::flexible(
                 'erag-unauthorized-email-providers',
                 [config('disposable-email.cache_ttl') / 2, config('disposable-email.cache_ttl') * 2],
-                function(): array{
+                function (): array {
                     Artisan::call(UpdateDisposableEmailList::class);
+
                     return self::getUnauthorizedProviders();
                 }
             );
@@ -90,7 +91,7 @@ final class DisposableEmailRule implements ValidationRule
             return Cache::remember(
                 'erag-unauthorized-email-providers',
                 config('disposable-email.cache_ttl'),
-                fn() => self::getUnauthorizedProviders()
+                fn () => self::getUnauthorizedProviders()
             );
         }
     }
@@ -718,7 +719,7 @@ final class DisposableEmailRule implements ValidationRule
             'zippymail.info', 'zipsendtest.com', 'ziragold.com', 'zoaxe.com', 'zoemail.com', 'zoemail.net',
             'zoemail.org', 'zoetropes.org', 'zombie-hive.com', 'zomg.info', 'zsero.com', 'zumpul.com', 'zv68.com',
             'zxcv.com', 'zxcvbnm.com', 'zymuying.com', 'zzi.us', 'zzrgg.com', 'zzz.com', 'gmailcom', 'gmail.co',
-            'gmail.in'
+            'gmail.in',
         ];
 
         return array_values(array_unique([...$domainArray, ...$allDomains]));

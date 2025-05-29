@@ -1,63 +1,196 @@
-name: Lint Check
+name: Code Quality Check
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+
+env:
+  PHP_VERSION: '8.1'
 
 jobs:
-  style:
+  lint:
+    name: PHP Code Style & Quality
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-
+    
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, bcmath
           tools: composer:v2
+          coverage: none
 
-      - name: Install Dependencies
-        run: composer install --no-scripts --no-interaction --prefer-dist
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Check code style with Pint
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Check branch status
+        id: branch-check
+        if: github.event_name == 'pull_request'
         run: |
-          vendor/bin/pint --test
-          if [ $? -eq 0 ]; then
+          git fetch origin main
+          if git merge-base --is-ancestor origin/main HEAD; then
+            echo "branch_status=up-to-date" >> $GITHUB_OUTPUT
+          else
+            echo "branch_status=outdated" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run PHP code style check
+        id: pint-check
+        run: |
+          if vendor/bin/pint --test; then
+            echo "pint_status=passed" >> $GITHUB_OUTPUT
             echo "✅ Code style is clean"
           else
+            echo "pint_status=failed" >> $GITHUB_OUTPUT
             echo "❌ Code style issues found"
-            vendor/bin/pint --verbose
+            echo "### Pint Output:" >> pint_output.txt
+            vendor/bin/pint --verbose >> pint_output.txt 2>&1 || true
             exit 1
           fi
 
-      - name: Add Lint Results as PR Comment
-        if: github.event_name == 'pull_request' && failure()
-        uses: actions/github-script@v6
+      - name: Add comprehensive PR comment
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `
-            ## ⚠️ PHP Code Style Check Failed
-
-            Please fix the code style issues found by Laravel Pint.
-            Run \`composer lint\` locally to see and fix the issues.
-
-            For more information about Laravel Pint, visit: https://laravel.com/docs/pint
-            `;
-
-            github.rest.issues.createComment({
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+            
+            let comment = '## 🔍 Code Quality Check Results\n\n';
+            
+            // Check if it's a fork
+            const isFork = context.payload.pull_request.head.repo.fork;
+            if (isFork) {
+              comment += '### ⚠️ Forked Repository Detected\n';
+              comment += 'This PR is from a forked repository. Please ensure you have the latest changes from the upstream repository.\n\n';
+              comment += '```bash\n';
+              comment += `git remote add upstream https://github.com/${context.repo.owner}/${context.repo.repo}.git\n`;
+              comment += 'git fetch upstream\n';
+              comment += 'git merge upstream/main\n';
+              comment += 'git push origin HEAD\n';
+              comment += '```\n\n';
+            }
+            
+            // Check branch status
+            const branchStatus = '${{ steps.branch-check.outputs.branch_status }}';
+            if (branchStatus === 'outdated') {
+              comment += '### 🚨 Branch Update Required\n';
+              comment += 'Your branch is behind the main branch. Please update it:\n\n';
+              comment += '```bash\n';
+              comment += 'git pull origin main\n';
+              comment += '```\n\n';
+            }
+            
+            // Check Pint status
+            const pintStatus = '${{ steps.pint-check.outputs.pint_status }}';
+            if (pintStatus === 'failed') {
+              comment += '### ❌ Code Style Issues Found\n';
+              comment += 'Laravel Pint found code style issues. Please fix them by running:\n\n';
+              comment += '```bash\n';
+              comment += 'composer install\n';
+              comment += 'vendor/bin/pint\n';
+              comment += '```\n\n';
+              
+              // Add Pint output if available
+              try {
+                const pintOutput = fs.readFileSync('pint_output.txt', 'utf8');
+                if (pintOutput.trim()) {
+                  comment += '<details>\n<summary>📋 Detailed Pint Output</summary>\n\n';
+                  comment += '```\n' + pintOutput + '\n```\n';
+                  comment += '</details>\n\n';
+                }
+              } catch (error) {
+                console.log('No pint output file found');
+              }
+            }
+            
+            comment += '---\n';
+            comment += '💡 **Tips:**\n';
+            comment += '- Run `composer lint` locally to check code style\n';
+            comment += '- Set up a pre-commit hook to automatically format code\n';
+            comment += '- See [Laravel Pint documentation](https://laravel.com/docs/pint) for more info\n';
+            
+            // Delete previous bot comments to avoid spam
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComments = comments.filter(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🔍 Code Quality Check Results')
+            );
+            
+            for (const botComment of botComments) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+              });
+            }
+            
+            // Create new comment
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: output
-            })
+              body: comment
+            });
+
+      - name: Add success comment
+        if: success() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Delete any previous failure comments
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComments = comments.filter(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🔍 Code Quality Check Results')
+            );
+            
+            for (const botComment of botComments) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+              });
+            }
+            
+            // Add success comment
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '## ✅ Code Quality Check Passed\n\nAll checks have passed successfully! Your code meets the project standards.'
+            });

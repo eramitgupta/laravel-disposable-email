@@ -28,7 +28,7 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 - 🌐 **Auto-sync with remote domain lists**
 - 📝 **Add your own custom blacklist** with ease
 - ⚡️ **Zero-configuration setup** with publishable config
-- ✅ **Compatible with Laravel 8, 9, 10, 11, and 12**
+- ✅ **Compatible with Laravel 10, 11, and 12**
 
 ---
 
@@ -54,7 +54,7 @@ return [
 ];
 ```
 
-### For Laravel v8.x, v9.x, v10.x
+### For Laravelv v10.x
 
 Ensure the service provider is registered in your `config/app.php` file:
 

@@ -26,4 +26,15 @@ return [
         'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
         'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Time To Live (seconds)
+    |--------------------------------------------------------------------------
+    |
+    | Set a custom time to live for the cached disposable email list.
+    | This value is in seconds.
+    |
+    */
+    'cache_ttl' => 3600,
 ];

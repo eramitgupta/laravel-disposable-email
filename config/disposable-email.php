@@ -29,12 +29,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Enable or Disable Caching
+    |--------------------------------------------------------------------------
+    |
+    | Set to true to enable caching of the disposable email list.
+    | Set to false to disable caching completely.
+    | Default is disable
+    */
+    'cache_enabled' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Time To Live (seconds)
     |--------------------------------------------------------------------------
     |
     | Set a custom time to live for the cached disposable email list.
-    | This value is in seconds.
+    | This value is in seconds. Default is 60 (1 minute).
     |
     */
-    'cache_ttl' => 3600,
+    'cache_ttl' => 60,
 ];

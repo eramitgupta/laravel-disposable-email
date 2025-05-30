@@ -75,10 +75,16 @@ final class DisposableEmailRule implements ValidationRule
 
     public static function getDefaultUnauthorizedProviders(): array
     {
-        return EmailServices::cache(
-            'erag-unauthorized-email-providers',
-            fn () => self::getUnauthorizedProviders()
-        );
+        $cacheEnabled = config('disposable-email.cache_enabled');
+
+        if ($cacheEnabled) {
+            return EmailServices::cache(
+                'erag-unauthorized-email-providers',
+                fn () => self::getUnauthorizedProviders()
+            );
+        }
+
+        return self::getUnauthorizedProviders();
     }
 
     protected static function getUnauthorizedProviders(): array

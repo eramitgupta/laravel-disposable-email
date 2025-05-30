@@ -28,9 +28,7 @@ class EmailServices
 
     public static function domains(): array
     {
-        return [
-            'demo.co', 'demo.com', 'demo.in', 'test.co', 'test.in', 'test.com', '0-mail.com', '027168.com', '0815.ru',
-            '0815.ry', '0815.su', '0845.ru', '0box.eu', '0clickemail.com', '0n0ff.net', '0nelce.com', '0v.ro', '0w.ro',
+        return ['0-mail.com', '027168.com', '0815.ru', '0815.ry', '0815.su', '0845.ru', '0box.eu', '0clickemail.com', '0n0ff.net', '0nelce.com', '0v.ro', '0w.ro',
             '0wnd.net', '0wnd.org', '0x207.info', '1-8.biz', '1-tm.com', '10-minute-mail.com', '1000rebates.stream',
             '100likers.com', '105kg.ru', '10dk.email', '10mail.com', '10mail.org', '10mail.tk', '10mail.xyz',
             '10minmail.de', '10minut.com.pl', '10minut.xyz', '10minutemail.be', '10minutemail.cf', '10minutemail.co.uk',

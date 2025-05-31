@@ -21,15 +21,15 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 
 ## ✅ Features
 
-- 🔥 **106,000+ known disposable domains** already included
-- 🧠 **Smart validation rule** for form requests
-- ⚙️ **Runtime email checking** via helper and facade
-- 🧩 **Blade directive** support for conditionals
-- 🌐 **Auto-sync with remote domain lists**
-- 📝 **Add your own custom blacklist** with ease
-- ⚡️ **Zero-configuration setup** with publishable config
-- ✅ **Compatible with Laravel 10, 11, and 12**
-
+* 🔥 **106,000+ known disposable domains** already included
+* 🧠 **Smart validation rule** for form requests
+* ⚙️ **Runtime email checking** via helper and facade
+* 🧩 **Blade directive** support for conditionals
+* 🌐 **Auto-sync with remote domain lists**
+* 📝 **Add your own custom blacklist** with ease
+* 🧠 **Optional caching** for performance
+* ⚡️ **Zero-configuration setup** with publishable config
+* ✅ **Compatible with Laravel 10, 11, and 12**
 ---
 
 
@@ -158,6 +158,9 @@ return [
         'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
         'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt',
     ],
+    
+    'cache_enabled' => false,
+    'cache_ttl' => 60,
 ];
 ```
 
@@ -212,4 +215,32 @@ Your file path **must match** the one defined in `config/disposable-email.php`:
 'blacklist_file' => storage_path('app/blacklist_file'),
 ```
 
-If the path or filename is different, the package will **not load** your custom list. ✅
+If the path or filename is different, the package will **not load** your custom list. 
+
+---
+
+## 🧠 Caching Support (Optional)
+
+This package supports **optional caching** to improve performance, especially when dealing with large domain lists.
+
+### 🔧 How It Works
+
+* If **enabled**, the package will cache the compiled list of disposable domains for faster lookup.
+* This is useful in high-traffic applications where the same list is accessed frequently.
+
+### 🛠 Enable Caching
+
+To enable caching, update the config file `config/disposable-email.php`:
+
+```php
+'cache_enabled' => true,
+'cache_ttl' => 60, 
+```
+
+### 🧹 Clear Cached List
+
+If you manually update the domain list and want to clear the cache, you can use:
+
+```bash
+php artisan cache:clear
+```

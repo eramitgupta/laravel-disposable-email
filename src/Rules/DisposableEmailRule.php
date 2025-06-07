@@ -38,7 +38,7 @@ final class DisposableEmailRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $value = (string) $value;
-        $value = trim($value);
+        $value = strtolower(trim($value));
 
         if (! str_contains($value, '@')) {
             $fail(__('The :attribute must contain an "@" symbol.'));
@@ -57,7 +57,7 @@ final class DisposableEmailRule implements ValidationRule
 
     public static function isDisposable(string $email): bool
     {
-        $email = trim($email);
+        $email = strtolower(trim($email));
 
         if (! str_contains($email, '@')) {
             return false;

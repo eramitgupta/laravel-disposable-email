@@ -43,7 +43,7 @@ class LaravelDisposableEmailServiceProvider extends ServiceProvider
             $rule->validate($attribute, $value, $failCallback ?? fn () => null);
 
             return empty($error);
-        }, 'The :attribute belongs to an unauthorized email provider.');
+        }, __('The :attribute belongs to an unauthorized email provider.'));
 
         Blade::if('disposableEmail', function (string $email) {
             return DisposableEmailRule::isDisposable($email);

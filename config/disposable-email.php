@@ -32,7 +32,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Set to true to enable caching of the disposable email list.
-    | Set to false to disable caching completely.
+    | Set too false to disable caching completely.
     | Default is disable
     */
     'cache_enabled' => false,

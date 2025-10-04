@@ -13,6 +13,7 @@
 </div>
 
 
+
 A Laravel package to detect and block disposable (temporary) email addresses during validation or runtime logic.
 
 > **Already contains 110,646+ disposable email domains!** 🔥

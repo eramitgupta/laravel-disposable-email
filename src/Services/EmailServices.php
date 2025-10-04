@@ -624,8 +624,7 @@ class EmailServices
             'zoaxe.com', 'zoemail.com', 'zoemail.net', 'zik.dj', 'zipcad.com', 'zipcatfish.com', 'zipo1.gq',
             'zippymail.info', 'zipsendtest.com', 'ziragold.com', 'zoaxe.com', 'zoemail.com', 'zoemail.net',
             'zoemail.org', 'zoetropes.org', 'zombie-hive.com', 'zomg.info', 'zsero.com', 'zumpul.com', 'zv68.com',
-            'zxcv.com', 'zxcvbnm.com', 'zymuying.com', 'zzi.us', 'zzrgg.com', 'zzz.com', 'gmailcom', 'gmail.co',
-            'gmail.in',
+            'zxcv.com', 'zxcvbnm.com', 'zymuying.com', 'zzi.us', 'zzrgg.com', 'zzz.com',
         ];
     }
 }

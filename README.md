@@ -15,13 +15,12 @@
 
 A Laravel package to detect and block disposable (temporary) email addresses during validation or runtime logic.
 
-> **Already contains 106,580+ disposable email domains!** 🔥
-
+> **Already contains 110,646+ disposable email domains!** 🔥
 ---
 
 ## ✅ Features
 
-* 🔥 **106,000+ known disposable domains** already included
+* 🔥 **110,646+ known disposable domains** already included
 * 🧠 **Smart validation rule** for form requests
 * ⚙️ **Runtime email checking** via helper and facade
 * 🧩 **Blade directive** support for conditionals
@@ -83,15 +82,6 @@ This will create `config/disposable-email.php`.
 
 ### 1. **Form Request Validation**
 
-#### ✅ Custom Rule:
-```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
-
-$request->validate([
-    'email' => ['required', 'email', new DisposableEmailRule()],
-]);
-```
-
 #### ✅ String-based Rule:
 ```php
 $request->validate([
@@ -103,6 +93,15 @@ $request->validate([
 ```php
 $request->validate([
     'email' => ['required', 'email', 'disposable_email'],
+]);
+```
+
+#### ✅ Custom Rule:
+```php
+use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+
+$request->validate([
+    'email' => ['required', 'email', new DisposableEmailRule()],
 ]);
 ```
 
@@ -155,8 +154,7 @@ return [
     'blacklist_file' => storage_path('app/blacklist_file),
 
     'remote_url' => [
-        'https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt',
-        'https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/txt/data.txt',
+       'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt',
     ],
     
     'cache_enabled' => false,

@@ -7,7 +7,6 @@ namespace EragLaravelDisposableEmail\Rules;
 use Closure;
 use EragLaravelDisposableEmail\Services\EmailServices;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\File;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
 final class DisposableEmailRule implements ValidationRule
@@ -90,29 +89,32 @@ final class DisposableEmailRule implements ValidationRule
     protected static function getUnauthorizedProviders(): array
     {
         $directory = config('disposable-email.blacklist_file');
+        $files = glob($directory.'/*.txt');
 
-        $files = collect(glob($directory.'/*.txt'));
+        $allDomains = [];
+        foreach ($files as $file) {
+            $content = file_get_contents($file);
+            $lines = explode("\n", $content);
 
-        $allDomains = $files->flatMap(function ($file) {
-            return collect(explode("\n", File::get($file)))
-                ->map(function ($line) {
-                    $line = strtolower(trim($line));
-                    if (empty($line)) {
-                        return null;
-                    }
-                    if (str_contains($line, '@')) {
-                        [, $domain] = explode('@', $line, 2);
-                        $line = trim($domain);
-                    }
+            foreach ($lines as $line) {
+                $line = strtolower(trim($line));
+                if (empty($line)) {
+                    continue;
+                }
 
-                    return preg_match('/^[a-z0-9.-]+\.[a-z]{2,}$/', $line) ? $line : null;
-                })
-                ->filter()
-                ->unique();
-        })->values()->all();
+                if (str_contains($line, '@')) {
+                    [, $domain] = explode('@', $line, 2);
+                    $line = trim($domain);
+                }
+
+                if (preg_match('/^[a-z0-9.-]+\.[a-z]{2,}$/', $line)) {
+                    $allDomains[$line] = true;
+                }
+            }
+        }
 
         $domains = EmailServices::domains();
 
-        return array_values(array_unique([...$domains, ...$allDomains]));
+        return array_keys(array_merge($allDomains, array_flip($domains)));
     }
 }

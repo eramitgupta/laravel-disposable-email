@@ -26,6 +26,11 @@ class EmailServices
         );
     }
 
+    public static function clearCache(): void
+    {
+        Cache::forget('erag-unauthorized-email-providers');
+    }
+
     public static function domains(): array
     {
         return ['0-mail.com', '027168.com', '0815.ru', '0815.ry', '0815.su', '0845.ru', '0box.eu', '0clickemail.com', '0n0ff.net', '0nelce.com', '0v.ro', '0w.ro',

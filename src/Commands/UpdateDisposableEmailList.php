@@ -2,6 +2,7 @@
 
 namespace EragLaravelDisposableEmail\Commands;
 
+use EragLaravelDisposableEmail\Services\EmailServices;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -27,6 +28,8 @@ class UpdateDisposableEmailList extends Command
      */
     public function handle()
     {
+        EmailServices::clearCache();
+
         $remoteUrls = config('disposable-email.remote_url');
         $directory = config('disposable-email.blacklist_file');
 

@@ -2,7 +2,7 @@
 
 
 <center>
-    <img width="956" alt="Screenshot 2024-10-04 at 10 34 23 PM" src="https://github.com/user-attachments/assets/cd7c0b65-912f-40d7-a9d5-fd44d37f055b">
+    <img width="956" alt="Screenshot 2024-10-04 at 10 34 23 PM" src="https://github.com/user-attachments/assets/6011a887-484f-48a3-8737-de6dfd64e553">
 </center>
 <div align="center">
 
@@ -29,7 +29,7 @@ A Laravel package to detect and block disposable (temporary) email addresses dur
 * 📝 **Add your own custom blacklist** with ease
 * 🧠 **Optional caching** for performance
 * ⚡️ **Zero-configuration setup** with publishable config
-* ✅ **Compatible with Laravel 10, 11, and 12**
+* ✅ **Compatible with Laravel 10, 11, 12, and 13**
 ---
 
 
@@ -41,7 +41,7 @@ composer require erag/laravel-disposable-email
 
 ## Register the Service Provider
 
-### For Laravel (Optional) v11.x, v12.x
+### For Laravel (Optional) v11.x, v12.x, v13.x
 
 Ensure the service provider is registered in your `/bootstrap/providers.php` file:
 

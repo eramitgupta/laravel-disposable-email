@@ -1,4 +1,5 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "erag/laravel-disposable-email",
     "description": "A Laravel package to detect and block disposable email addresses.",
     "license": "MIT",

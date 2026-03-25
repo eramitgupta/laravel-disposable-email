@@ -143,10 +143,25 @@ if (DisposableEmail::isDisposable('agedmail.com')) {
 
 ## 🔄 Sync From Remote (Optional)
 
-Update the list manually
+Update the list manually:
+
 ```bash
 php artisan erag:sync-disposable-email-list
 ```
+
+### ⏰ Keeping the Domain List Up to Date
+
+This package receives a **weekly** patch release containing updates to the built-in disposable domains list. If you are not able to bump your installed version accordingly, or just want to stay ahead of things, make sure to update the domains list yourself at any interval you like by running or scheduling the `erag:sync-disposable-email-list` command:
+
+```php
+// routes/console.php
+
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('erag:sync-disposable-email-list')->daily();
+```
+
+---
 
 ## 🔗 Config Options (config/disposable-email.php)
 

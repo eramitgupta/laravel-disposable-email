@@ -15,6 +15,7 @@ Read `reference.md` in this folder before making changes. It contains the packag
 
 - Prefer the built-in validation rule name `disposable_email` for standard request validation.
 - Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object is clearer.
+- Use `EragLaravelDisposableEmail\Support\Email` when the task is about package internals or shared support logic.
 - Use `DisposableEmailRule::isDisposable($email)` or the `DisposableEmail` facade for runtime checks.
 - Use the `@disposableEmail(...)` Blade conditional for view-only branching.
 - Use `php artisan erag:install-disposable-email` to publish config before instructing users to edit `config/disposable-email.php`.

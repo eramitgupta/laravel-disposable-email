@@ -4,6 +4,7 @@
 
 - Validation rule string: `disposable_email`
 - Rule class: `EragLaravelDisposableEmail\Rules\DisposableEmailRule`
+- Support helper: `EragLaravelDisposableEmail\Support\Email`
 - Facade alias: `DisposableEmail`
 - Blade conditional: `@disposableEmail(...)`
 - Install command: `php artisan erag:install-disposable-email`
@@ -114,6 +115,12 @@ class SignupGuard
         }
     }
 }
+```
+
+Internal support class location:
+
+```php
+use EragLaravelDisposableEmail\Support\Email;
 ```
 
 ## Blade Example

@@ -1,11 +1,11 @@
 <?php
 
-namespace EragLaravelDisposableEmail\Services;
+namespace EragLaravelDisposableEmail\Support;
 
 use EragLaravelDisposableEmail\Enums\LaravelVersion;
 use Illuminate\Support\Facades\Cache;
 
-class EmailServices
+class Email
 {
     public static function cache(string $cacheKey, callable $callback): mixed
     {

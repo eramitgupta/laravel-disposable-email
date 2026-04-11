@@ -2,7 +2,7 @@
 
 namespace EragLaravelDisposableEmail\Commands;
 
-use EragLaravelDisposableEmail\Services\EmailServices;
+use EragLaravelDisposableEmail\Support\Email;
 use Illuminate\Console\Command;
 
 class InstallDisposableEmail extends Command
@@ -11,9 +11,9 @@ class InstallDisposableEmail extends Command
 
     protected $description = 'Publish config and initialize disposable domain file.';
 
-    public function handle()
+    public function handle(): void
     {
-        EmailServices::clearCache();
+        Email::clearCache();
 
         $this->call('vendor:publish', [
             '--tag' => 'erag:publish-disposable-config',

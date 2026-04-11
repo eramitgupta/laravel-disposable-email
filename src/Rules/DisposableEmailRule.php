@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EragLaravelDisposableEmail\Rules;
 
 use Closure;
-use EragLaravelDisposableEmail\Services\EmailServices;
+use EragLaravelDisposableEmail\Support\Email;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
@@ -77,7 +77,7 @@ class DisposableEmailRule implements ValidationRule
         $cacheEnabled = config('disposable-email.cache_enabled');
 
         if ($cacheEnabled) {
-            return EmailServices::cache(
+            return Email::cache(
                 'erag-unauthorized-email-providers',
                 fn () => self::getUnauthorizedProviders()
             );
@@ -113,7 +113,7 @@ class DisposableEmailRule implements ValidationRule
             }
         }
 
-        $domains = EmailServices::domains();
+        $domains = Email::domains();
 
         return array_keys(array_merge($allDomains, array_flip($domains)));
     }

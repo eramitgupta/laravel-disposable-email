@@ -1,3 +1,28 @@
-/vendor/
-.idea
-composer.lock
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# VitePress build output
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/

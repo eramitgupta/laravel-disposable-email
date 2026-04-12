@@ -1,27 +1,29 @@
 ---
 name: disposable-email-detection
-description: Build and work with laravel-disposable-email validation, runtime checks, Blade conditionals, config, sync commands, and custom blacklist workflows. Use when adding or updating disposable email validation in Laravel forms, services, middleware, controllers, Blade views, or scheduled tasks.
+description: Add and maintain laravel-disposable-email validation, runtime checks, sync flows, scheduling, caching, troubleshooting, and Blade conditionals in Laravel applications. Use when working on forms, Form Requests, APIs, services, middleware, jobs, or custom blacklist workflows.
 ---
 
 # Laravel Disposable Email Detection
 
-Use this skill when a task involves this package's validation rule, facade, Blade directive, install command, sync command, or config.
+Use this skill when a task involves the package's validation rule, rule object, facade, Blade conditional, install command, sync command, scheduler setup, config, caching, or blacklist files.
 
 ## Read First
 
-Read `reference.md` in this folder before making changes. It contains the package API, conventions, and implementation examples that match the package README and source.
+Read `reference.md` in this folder before making changes. It mirrors the current package docs and keeps examples aligned with the package API and Laravel usage patterns.
 
 ## Working Rules
 
-- Prefer the built-in validation rule name `disposable_email` for standard request validation.
-- Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object is clearer.
-- Use `EragLaravelDisposableEmail\Support\Email` when the task is about package internals or shared support logic.
-- Use `DisposableEmailRule::isDisposable($email)` or the `DisposableEmail` facade for runtime checks.
-- Use the `@disposableEmail(...)` Blade conditional for view-only branching.
-- Use `php artisan erag:install-disposable-email` to publish config before instructing users to edit `config/disposable-email.php`.
-- Use `php artisan erag:sync-disposable-email-list` when the task is about refreshing remote domain lists.
-- Put custom domains in the configured blacklist directory as plain domains, one per line.
-- If caching is enabled, remember cache invalidation when domain sources change.
+- Prefer the built-in validation rule name `disposable_email` for standard request validation in controllers, Form Requests, APIs, and manual validators.
+- Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object or direct runtime check is clearer.
+- Use the `DisposableEmail` facade when the codebase already favors facade-style package access.
+- Use `@disposableEmail(...)` only for Blade branching, not as a replacement for request validation.
+- Use `php artisan erag:install-disposable-email` before instructing users to edit `config/disposable-email.php`.
+- Use `php artisan erag:sync-disposable-email-list` when the task is about refreshing remote domain lists from configured sources.
+- Treat `config('disposable-email.remote_url')` as the source of truth for sync inputs.
+- Put custom domains in the configured blacklist directory as plain domains, one per line, in `.txt` files.
+- Mention scheduling separately when the user wants automatic syncs. Use Laravel's scheduler with `erag:sync-disposable-email-list`.
+- Mention caching separately when the user wants repeated lookups optimized or config changes reflected.
+- If caching is enabled, include cache clearing as part of troubleshooting and rollout steps.
 
 ## Implementation Notes
 
@@ -29,10 +31,13 @@ Read `reference.md` in this folder before making changes. It contains the packag
 - The Blade conditional name is `disposableEmail`.
 - The config file is `config/disposable-email.php`.
 - The default blacklist directory is `storage/app/blacklist_file`.
-- The package accepts plain domains and also strips `user@domain.tld` entries down to their domain when loading local text files.
+- Remote sync sources are configured through `remote_url`.
+- The package reads every `.txt` file in the configured blacklist directory.
+- The package accepts plain domains and also normalizes `user@domain.tld` style entries down to their domain when loading local text files.
 
 ## Output Expectations
 
-- Show package-native examples first.
-- Keep examples in Laravel style.
+- Start with the simplest Laravel-native example, then move to more advanced usage only if needed.
+- Keep examples in Laravel style and match current docs terminology: Installation, Configuration, Validation and Runtime, Sync and Blacklist, Schedule Sync, Caching, Troubleshooting.
 - When documenting setup, mention the exact Artisan commands exposed by the package.
+- If the task is about a bug or package behavior, include the fastest troubleshooting step first.

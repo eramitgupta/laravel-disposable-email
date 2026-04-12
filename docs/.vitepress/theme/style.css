@@ -194,6 +194,51 @@ body {
   background: linear-gradient(180deg, rgba(5, 5, 5, 0.99) 0%, rgba(0, 0, 0, 0.99) 100%);
 }
 
+@media (max-width: 960px) {
+  .VPNavScreen {
+    position: fixed;
+    top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    z-index: 9998 !important;
+    pointer-events: auto;
+  }
+
+  .VPSidebar {
+    position: fixed;
+    top: var(--vp-layout-top-height, 0px);
+    bottom: 0;
+    left: 0;
+    display: block;
+    visibility: hidden;
+    transform: translateX(-100%);
+    pointer-events: none;
+    z-index: 9999 !important;
+  }
+
+  .VPSidebar.open {
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+    z-index: 9999 !important;
+  }
+
+  .VPSidebar .curtain,
+  .VPSidebar .nav {
+    position: relative;
+    z-index: 10000 !important;
+  }
+
+  .VPNav,
+  .VPLocalNav {
+    z-index: 30 !important;
+  }
+}
+
 .VPSidebarItem.level-0 > .item > .text {
   font-size: 0.8rem;
   font-weight: 800;
@@ -1750,6 +1795,11 @@ body {
 @media (max-width: 640px) {
   :root {
     --doc-page-pad: 18px;
+  }
+
+  .VPNavBarHamburger,
+  .VPNavBarHamburger.hamburger {
+    display: none !important;
   }
 
   .vp-doc {

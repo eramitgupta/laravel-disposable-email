@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { withBase } from 'vitepress'
+</script>
+
 <template>
   <div class="home-redesign">
     <div class="home-section-intro">
@@ -10,8 +14,8 @@
         support, custom blacklist support, and optional caching for faster lookups.
       </p>
       <div class="quick-links">
-        <a href="/getting-started">Get started</a>
-        <a href="/validation-and-runtime">See validation examples</a>
+        <a :href="withBase('/getting-started')">Get started</a>
+        <a :href="withBase('/validation-and-runtime')">See validation examples</a>
         <a href="https://github.com/eramitgupta/laravel-disposable-email">GitHub</a>
       </div>
     </div>
@@ -146,10 +150,10 @@
         syncing, and caching to set up a complete disposable email blocking workflow.
       </p>
       <div class="quick-links">
-        <a href="/getting-started">Installation guide</a>
-        <a href="/configuration">Configuration options</a>
-        <a href="/sync-and-blacklist">Sync and blacklist</a>
-        <a href="/caching">Caching notes</a>
+        <a :href="withBase('/getting-started')">Installation guide</a>
+        <a :href="withBase('/configuration')">Configuration options</a>
+        <a :href="withBase('/sync-and-blacklist')">Sync and blacklist</a>
+        <a :href="withBase('/caching')">Caching notes</a>
       </div>
     </div>
   </div>

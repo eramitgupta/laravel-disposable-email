@@ -1,11 +1,27 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 
 const email = ref('')
-const remoteUrl = '/disposable_email.json'
+const remoteUrl = withBase('/disposable_email.json')
 const disposableDomains = ref<Set<string>>(new Set())
 const isLoading = ref(true)
 const hasRemoteError = ref(false)
+
+const fallbackDomains = [
+  '0-mail.com',
+  '10minutemail.com',
+  '1secmail.com',
+  'tempmail.com',
+  'mailinator.com',
+  'guerrillamail.com',
+  'yopmail.com',
+  'trashmail.com',
+  'sharklasers.com',
+  'dispostable.com',
+  'agedmail.com',
+  'fakeinbox.com',
+]
 
 const suggestedEmails = [
   'demo@0-mail.com',
@@ -154,7 +170,9 @@ onMounted(async () => {
 
     disposableDomains.value = new Set(domains)
   } catch {
-    hasRemoteError.value = true
+    // Keep the demo functional even if the JSON asset fails to load.
+    disposableDomains.value = new Set(fallbackDomains)
+    hasRemoteError.value = false
   } finally {
     isLoading.value = false
   }

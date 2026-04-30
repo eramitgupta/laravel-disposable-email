@@ -80,7 +80,7 @@ export default defineConfig({
           { text: 'Caching', link: '/caching' },
           { text: 'Troubleshooting', link: '/troubleshooting' },
           { text: 'Contributing', link: '/contributing' },
-          { text: 'Deprecated 4.1.1', link: '/deprecated-4-1-1' }
+          { text: 'Deprecated 5.0.0', link: '/deprecated-5-0-0' }
         ]
       }
     ],

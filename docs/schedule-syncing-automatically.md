@@ -50,3 +50,37 @@ Automatic syncing is useful when:
 - you want fresh disposable domains without manual updates
 - your app depends on current domain data
 - you do not want to rely only on package version updates
+
+## 6. Update the built-in package array daily
+
+The package repository also includes a maintainer script that updates the built-in `Email::domains()` array from:
+
+```text
+https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt
+```
+
+Run it from the package root:
+
+```bash
+php scripts/update-built-in-domains.php
+```
+
+The script:
+
+- fetches the remote domain list
+- normalizes email-style entries to domains
+- removes invalid lines
+- deduplicates and sorts domains
+- rewrites `src/Support/Email.php`
+
+This is for maintaining the package source array. For Laravel applications, use `php artisan erag:sync-disposable-email-list` to sync domains into storage.
+
+## 7. GitHub Actions daily update
+
+The repository includes a daily workflow:
+
+```text
+.github/workflows/update-built-in-domains.yml
+```
+
+It runs every day at `02:00 UTC`, updates `src/Support/Email.php`, and commits only when the built-in domain array changes.

@@ -79,7 +79,8 @@ export default defineConfig({
           { text: 'Schedule Sync', link: '/schedule-syncing-automatically' },
           { text: 'Caching', link: '/caching' },
           { text: 'Troubleshooting', link: '/troubleshooting' },
-          { text: 'Contributing', link: '/contributing' }
+          { text: 'Contributing', link: '/contributing' },
+          { text: 'Deprecated 5.0.0', link: '/deprecated-5-0-0' }
         ]
       }
     ],

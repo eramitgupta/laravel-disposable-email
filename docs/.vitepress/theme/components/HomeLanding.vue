@@ -52,7 +52,7 @@ import { withBase } from 'vitepress'
           <span></span>
           <span></span>
         </div>
-        <pre class="home-code-body"><span>composer require erag/laravel-disposable-email</span><span>php artisan erag:install-disposable-email</span><span></span><span>$request-&gt;validate([</span><span>    'email' =&gt; ['required', 'email', 'disposable_email'],</span><span>]);</span><span></span><span>if (DisposableEmail::isDisposable($email)) {</span><span>    // stop temp inboxes early</span><span>}</span></pre>
+        <pre class="home-code-body"><span>composer require erag/laravel-disposable-email</span><span>php artisan erag:install-disposable-email</span><span></span><span>$request-&gt;validate([</span><span>    'email' =&gt; ['required', 'email', 'disposable_email'],</span><span>]);</span><span></span><span>if (Disposable::Email($email)) {</span><span>    // stop temp inboxes early</span><span>}</span></pre>
       </div>
     </div>
 
@@ -83,6 +83,40 @@ import { withBase } from 'vitepress'
     </div>
 
     <EmailCheckDemo />
+
+    <div class="home-release-panel">
+      <div class="home-release-copy">
+        <span class="section-label release-label">New in this release</span>
+        <h3>Shorter checks, clearer results, and better domain control.</h3>
+        <p>
+          Use the new <code>Disposable</code> facade for quick checks, inspect detailed match
+          results when you need more context, and manage trusted or subdomain behavior from config.
+        </p>
+        <pre class="home-release-code"><span>Disposable::Email('test@tempmail.com');</span><span>Disposable::domain('tempmail.com');</span><span>$result = Disposable::check($email);</span></pre>
+      </div>
+      <div class="home-release-list">
+        <div>
+          <span>API</span>
+          <strong>Short facade methods</strong>
+          <p><code>Email</code>, <code>domain</code>, <code>check</code>, and <code>rule</code>.</p>
+        </div>
+        <div>
+          <span>RESULT</span>
+          <strong>Detailed match data</strong>
+          <p>Read domain, matched domain, source, whitelist state, and array output.</p>
+        </div>
+        <div>
+          <span>CONFIG</span>
+          <strong>Whitelist and subdomains</strong>
+          <p>Allow trusted domains and block disposable parent-domain subdomains.</p>
+        </div>
+        <div>
+          <span>CLI</span>
+          <strong>Stats command</strong>
+          <p>Run <code>php artisan disposable:stats</code> to inspect loaded lists.</p>
+        </div>
+      </div>
+    </div>
 
     <div class="home-section-intro">
       <span class="section-label">Practical usage</span>
@@ -133,7 +167,7 @@ import { withBase } from 'vitepress'
         </div>
         <div class="home-example-card">
           <strong>Facade</strong>
-          <pre class="home-example-code"><span>use DisposableEmail;</span><span></span><span>if (DisposableEmail::isDisposable($email)) {</span><span>    throw ValidationException::withMessages([</span><span>        'email' =&gt; 'Use a permanent inbox.'</span><span>    ]);</span><span>}</span></pre>
+          <pre class="home-example-code"><span>use Disposable;</span><span></span><span>if (Disposable::Email($email)) {</span><span>    throw ValidationException::withMessages([</span><span>        'email' =&gt; 'Use a permanent inbox.'</span><span>    ]);</span><span>}</span></pre>
         </div>
         <div class="home-example-card">
           <strong>Blade</strong>

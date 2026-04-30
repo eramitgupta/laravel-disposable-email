@@ -104,6 +104,16 @@ $request->validate([
 
 This is useful when your team prefers explicit rule objects over string rules.
 
+You can also create the rule through the facade:
+
+```php
+use Disposable;
+
+$request->validate([
+    'email' => ['required', 'email', Disposable::rule()],
+]);
+```
+
 ## 6. Controller example
 
 Here is a complete controller example using request validation:
@@ -174,21 +184,51 @@ Route::post('/register', function (Request $request) {
 });
 ```
 
-## 9. Direct runtime check
+## 9. Direct runtime check <span class="doc-new-badge">New</span> {#direct-runtime-check}
 
-Use the rule class when you need a simple boolean result outside request validation:
+Use the short facade when you need a simple boolean result outside request validation:
 
 ```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use Disposable;
 
-if (DisposableEmailRule::isDisposable('test@tempmail.com')) {
+if (Disposable::Email('test@tempmail.com')) {
+    // Handle disposable email
+}
+
+if (Disposable::domain('test@tempmail.com')) {
+    // Handle disposable domain
+}
+```
+
+You can also import the package facade namespace directly:
+
+```php
+use EragLaravelDisposableEmail\Facades\Disposable;
+
+if (Disposable::Email('test@tempmail.com')) {
     // Handle disposable email
 }
 ```
 
-This is helpful in service classes, actions, jobs, and moderation workflows.
+## 10. Detailed runtime check <span class="doc-new-badge">New</span> {#detailed-runtime-check}
 
-## 10. Service class example
+Use `Disposable::check()` when you need more than a boolean:
+
+```php
+use Disposable;
+
+$result = Disposable::check('test@tempmail.com');
+
+$result->disposable(); // true
+$result->domain(); // tempmail.com
+$result->matchedDomain(); // tempmail.com
+$result->source(); // built-in, custom, or whitelist
+$result->toArray();
+```
+
+This is useful for API responses, admin tools, logging, and debugging domain matching.
+
+## 11. Service class example
 
 Runtime checks work well in business logic:
 
@@ -197,14 +237,14 @@ Runtime checks work well in business logic:
 
 namespace App\Services\Auth;
 
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use Disposable;
 use Illuminate\Validation\ValidationException;
 
 class SignupPolicy
 {
     public function assertAllowedEmail(string $email): void
     {
-        if (DisposableEmailRule::isDisposable($email)) {
+        if (Disposable::Email($email)) {
             throw ValidationException::withMessages([
                 'email' => 'Please use a permanent email address.',
             ]);
@@ -213,24 +253,24 @@ class SignupPolicy
 }
 ```
 
-## 11. Facade usage
+## 12. Facade usage
 
-If you prefer the facade style, you can use:
+If you prefer the short facade style, you can use:
 
 ```php
-use DisposableEmail;
+use Disposable;
 
-if (DisposableEmail::isDisposable('amit@agedmail.com')) {
+if (Disposable::Email('amit@agedmail.com')) {
     // Handle disposable email
 }
 ```
 
-## 12. Runtime API check endpoint
+## 13. Runtime API check endpoint
 
 You can also expose a lightweight API endpoint for live front-end checks:
 
 ```php
-use DisposableEmail;
+use Disposable;
 use Illuminate\Http\Request;
 
 Route::post('/email/check', function (Request $request) {
@@ -242,12 +282,12 @@ Route::post('/email/check', function (Request $request) {
 
     return response()->json([
         'email' => $email,
-        'disposable' => DisposableEmail::isDisposable($email),
+        'disposable' => Disposable::Email($email),
     ]);
 });
 ```
 
-## 13. Blade directive
+## 14. Blade directive
 
 The package also includes a Blade directive for simple template checks:
 
@@ -259,7 +299,7 @@ The package also includes a Blade directive for simple template checks:
 @enddisposableEmail
 ```
 
-## 14. Blade form feedback example
+## 15. Blade form feedback example
 
 Here is a more complete Blade example:
 

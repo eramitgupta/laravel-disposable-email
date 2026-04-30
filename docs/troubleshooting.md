@@ -148,9 +148,17 @@ If the docs demo shows a temporary validation issue:
 If you want to confirm a result in your own code, use a direct runtime check:
 
 ```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use Disposable;
 
-$isDisposable = DisposableEmailRule::isDisposable('test@tempmail.com');
+$isDisposable = Disposable::Email('test@tempmail.com');
+```
+
+You can also use the namespaced facade:
+
+```php
+use EragLaravelDisposableEmail\Facades\Disposable;
+
+$isDisposable = Disposable::Email('test@tempmail.com');
 ```
 
 This is often the fastest way to confirm whether the package is seeing the domain the way you expect.

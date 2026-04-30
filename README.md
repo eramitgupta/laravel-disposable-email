@@ -13,6 +13,26 @@ Laravel Disposable Email Detection is a Laravel package for detecting and blocki
 > **Already contains 110,646+ disposable email domains!** 🔥
 ---
 
+## Quick runtime check
+
+```php
+use Disposable;
+
+if (Disposable::Email('test@tempmail.com')) {
+    // Handle disposable email
+}
+
+if (Disposable::domain('test@tempmail.com')) {
+    // Handle disposable domain
+}
+
+$result = Disposable::check('test@tempmail.com');
+
+$result->disposable(); // true
+$result->domain(); // tempmail.com
+$result->source(); // built-in, custom, or whitelist
+```
+
 ## ✅ Features
 
 * 🔥 **110,646+ known disposable domains** already included
@@ -21,6 +41,10 @@ Laravel Disposable Email Detection is a Laravel package for detecting and blocki
 * 🧩 **Blade directive** support for conditionals
 * 🌐 **Auto-sync with remote domain lists**
 * 📝 **Add your own custom blacklist** with ease
+* ✅ **Allow trusted domains** with a whitelist
+* 🧱 **Block subdomains** of disposable parent domains
+* 🔎 **Detailed runtime results** via `Disposable::check()`
+* 📊 **Domain stats command** via `php artisan disposable:stats`
 * 🧠 **Optional caching** for performance
 * ⚡️ **Zero-configuration setup** with publishable config
 * ✅ **Compatible with Laravel 10, 11, 12, and 13**
@@ -31,3 +55,13 @@ Laravel Disposable Email Detection is a Laravel package for detecting and blocki
 Complete documentation for installation, configuration, validation, syncing, caching, and troubleshooting is available at:
 
 https://eramitgupta.github.io/laravel-disposable-email/
+
+Deprecated and removed API notes for version `5.0.0`:
+
+https://eramitgupta.github.io/laravel-disposable-email/deprecated-5-0-0
+
+Maintainer script for updating the built-in `Email::domains()` array:
+
+```bash
+php scripts/update-built-in-domains.php
+```

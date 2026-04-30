@@ -49,7 +49,7 @@
                 "EragLaravelDisposableEmail\\LaravelDisposableEmailServiceProvider"
             ],
             "aliases": {
-                "DisposableEmail": "EragLaravelDisposableEmail\\Facades\\DisposableEmail"
+                "Disposable": "EragLaravelDisposableEmail\\Facades\\Disposable"
             }
         }
     }

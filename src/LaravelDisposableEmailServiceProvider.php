@@ -2,6 +2,7 @@
 
 namespace EragLaravelDisposableEmail;
 
+use EragLaravelDisposableEmail\Commands\DisposableEmailStats;
 use EragLaravelDisposableEmail\Commands\InstallDisposableEmail;
 use EragLaravelDisposableEmail\Commands\UpdateDisposableEmailList;
 use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
@@ -18,6 +19,7 @@ class LaravelDisposableEmailServiceProvider extends ServiceProvider
         );
 
         $this->commands([
+            DisposableEmailStats::class,
             InstallDisposableEmail::class,
             UpdateDisposableEmailList::class,
         ]);
@@ -46,7 +48,7 @@ class LaravelDisposableEmailServiceProvider extends ServiceProvider
         }, __('The :attribute belongs to an unauthorized email provider.'));
 
         Blade::if('disposableEmail', function (string $email) {
-            return DisposableEmailRule::isDisposable($email);
+            return DisposableEmailRule::email($email);
         });
     }
 }

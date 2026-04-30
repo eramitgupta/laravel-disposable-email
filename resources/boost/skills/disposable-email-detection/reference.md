@@ -4,10 +4,14 @@
 
 - Validation rule string: `disposable_email`
 - Rule class: `EragLaravelDisposableEmail\Rules\DisposableEmailRule`
-- Facade alias: `DisposableEmail`
+- Facade alias: `Disposable`
+- Namespaced facade: `EragLaravelDisposableEmail\Facades\Disposable`
 - Blade conditional: `@disposableEmail(...)`
+- Deprecated notes: `/deprecated-5-0-0`
 - Install command: `php artisan erag:install-disposable-email`
 - Sync command: `php artisan erag:sync-disposable-email-list`
+- Stats command: `php artisan disposable:stats`
+- Built-in array update script: `php scripts/update-built-in-domains.php`
 - Config file: `config/disposable-email.php`
 - Default blacklist directory: `storage/app/blacklist_file`
 
@@ -72,6 +76,22 @@ $request->validate([
 ]);
 ```
 
+Facade rule shortcut:
+
+```php
+use Disposable;
+
+$request->validate([
+    'email' => ['required', 'email', Disposable::rule()],
+]);
+```
+
+`Disposable::make()` is also available as an alias:
+
+```php
+'email' => ['required', 'email', Disposable::make()],
+```
+
 Form request rule set:
 
 ```php
@@ -118,38 +138,59 @@ Route::post('/register', function (Request $request) {
 
 ## Runtime Examples
 
-Static check:
+Boolean email check:
 
 ```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use Disposable;
 
-if (DisposableEmailRule::isDisposable($email)) {
+if (Disposable::Email($email)) {
     abort(422, 'Disposable email addresses are not allowed.');
 }
 ```
 
-Facade check:
+Domain check:
 
 ```php
-use DisposableEmail;
+use Disposable;
 
-if (DisposableEmail::isDisposable($email)) {
-    return back()->withErrors([
-        'email' => 'Please use a permanent email address.',
-    ]);
-}
+Disposable::domain('tempmail.com');
+Disposable::domain('test@tempmail.com');
+```
+
+Namespaced facade:
+
+```php
+use EragLaravelDisposableEmail\Facades\Disposable;
+
+Disposable::Email($email);
+Disposable::domain($email);
+```
+
+Detailed check:
+
+```php
+use Disposable;
+
+$result = Disposable::check('test@tempmail.com');
+
+$result->disposable();
+$result->domain();
+$result->matchedDomain();
+$result->source(); // built-in, custom, or whitelist
+$result->whitelisted();
+$result->toArray();
 ```
 
 Service-style usage:
 
 ```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use Disposable;
 
 class SignupGuard
 {
     public function ensureRealMailbox(string $email): void
     {
-        if (DisposableEmailRule::isDisposable($email)) {
+        if (Disposable::Email($email)) {
             throw new InvalidArgumentException('Disposable email addresses are not allowed.');
         }
     }
@@ -174,6 +215,10 @@ return [
     'remote_url' => [
         'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt',
     ],
+    'whitelist' => [
+        // 'trusted-test-domain.com',
+    ],
+    'block_subdomains' => true,
     'cache_enabled' => false,
     'cache_ttl' => 60,
 ];
@@ -183,8 +228,10 @@ Configuration keys:
 
 - `blacklist_file`: directory that stores local custom `.txt` blacklist files
 - `remote_url`: remote sources used by the sync command
+- `whitelist`: domains that should always pass, even if found in a disposable source
+- `block_subdomains`: when true, blocked parent domains also block their subdomains
 - `cache_enabled`: enables caching for the compiled domain list
-- `cache_ttl`: cache lifetime in minutes
+- `cache_ttl`: cache lifetime in seconds
 
 ## Sync and Blacklist
 
@@ -200,6 +247,22 @@ What the sync command does:
 - reads URLs from `config('disposable-email.remote_url')`
 - normalizes the remote response into domains
 - stores the updated list in the configured blacklist directory
+
+This command updates application storage. It does not rewrite the package's built-in `Email::domains()` array.
+
+Built-in array update for package maintainers:
+
+```bash
+php scripts/update-built-in-domains.php
+```
+
+The script fetches:
+
+```text
+https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt
+```
+
+Then it normalizes, deduplicates, sorts, and rewrites `src/Support/Email.php`.
 
 Custom blacklist file:
 
@@ -220,6 +283,30 @@ Notes:
 - the package reads every `.txt` file in the configured blacklist directory
 - use one domain per line
 - keep files plain text with no comments or metadata
+- add trusted domains to `whitelist` when they should always pass
+- keep `block_subdomains` enabled when parent domains should block subdomains
+
+Whitelist example:
+
+```php
+'whitelist' => [
+    'trusted-test-domain.com',
+],
+```
+
+Subdomain blocking example:
+
+```php
+'block_subdomains' => true,
+```
+
+Stats command:
+
+```bash
+php artisan disposable:stats
+```
+
+The stats command shows built-in domains, custom blacklist domains, total domains, whitelist count, remote source count, cache status, subdomain blocking status, and last synced file time.
 
 ## Schedule Sync
 

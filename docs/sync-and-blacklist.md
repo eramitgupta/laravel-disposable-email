@@ -29,6 +29,14 @@ When the command runs, it:
 3. Normalizes the remote response into a clean domain list
 4. Stores the updated list in your configured blacklist directory
 
+This command updates application storage. It does not rewrite the package's built-in `Email::domains()` array.
+
+To update the package source array, run:
+
+```bash
+php scripts/update-built-in-domains.php
+```
+
 ## 2. Add your own blacklist file
 
 Create or edit this file:
@@ -75,3 +83,44 @@ Your custom blacklist file should follow these rules:
 | File extension | `.txt` |
 
 If the file path does not match your configuration, the package will not load your custom domains.
+
+## 5. Add trusted domains to the whitelist <span class="doc-new-badge">New</span> {#whitelist}
+
+Use the whitelist when a domain should always pass:
+
+```php
+'whitelist' => [
+    'trusted-test-domain.com',
+],
+```
+
+Whitelisted domains override the built-in and custom blacklist.
+
+## 6. Block subdomains <span class="doc-new-badge">New</span> {#block-subdomains}
+
+Subdomain blocking is enabled by default:
+
+```php
+'block_subdomains' => true,
+```
+
+With this option enabled, `mail.tempmail.com` is blocked when `tempmail.com` exists in the disposable list.
+
+## 7. View package stats <span class="doc-new-badge">New</span> {#stats-command}
+
+Use the stats command to inspect the loaded domain lists and package settings:
+
+```bash
+php artisan disposable:stats
+```
+
+The command shows:
+
+- Built-in domain count
+- Custom blacklist domain count
+- Total domain count
+- Whitelist count
+- Remote source count
+- Cache status
+- Subdomain blocking status
+- Last synced file time

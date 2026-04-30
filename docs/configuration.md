@@ -23,6 +23,12 @@ return [
 
     'cache_enabled' => false,
     'cache_ttl' => 60,
+
+    'whitelist' => [
+        // 'example.com',
+    ],
+
+    'block_subdomains' => true,
 ];
 ```
 
@@ -42,7 +48,27 @@ This enables caching for the compiled disposable domain list.
 
 ### `cache_ttl`
 
-This sets the cache lifetime in minutes.
+This sets the cache lifetime in seconds.
+
+### `whitelist`
+
+This is the list of domains that should always pass even if they appear in a disposable domain list.
+
+```php
+'whitelist' => [
+    'company-temp-domain.com',
+],
+```
+
+### `block_subdomains`
+
+This controls whether blocked parent domains also block subdomains.
+
+```php
+'block_subdomains' => true,
+```
+
+When enabled, blocking `tempmail.com` also blocks `mail.tempmail.com`.
 
 ## Example configuration
 
@@ -57,6 +83,12 @@ return [
 
     'cache_enabled' => true,
     'cache_ttl' => 120,
+
+    'whitelist' => [
+        'trusted-test-domain.com',
+    ],
+
+    'block_subdomains' => true,
 ];
 ```
 

@@ -13,6 +13,7 @@ const canonicalUrl = (page: string): string => {
 }
 
 const searchConsoleVerification = process.env.GOOGLE_SITE_VERIFICATION
+  ?? 'Sg_kj1Lw1baonD9d9hDGHoppTwdtShT5KspgZtUW3Ns'
 
 export default defineConfig({
   base: '/laravel-disposable-email/',

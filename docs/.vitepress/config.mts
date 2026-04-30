@@ -1,5 +1,19 @@
 import { defineConfig } from 'vitepress'
 
+const siteUrl = 'https://eramitgupta.github.io/laravel-disposable-email'
+const siteOrigin = 'https://eramitgupta.github.io'
+const siteBase = '/laravel-disposable-email'
+
+const canonicalUrl = (page: string): string => {
+  const path = page
+    .replace(/(^|\/)index\.md$/, '$1')
+    .replace(/\.md$/, '')
+
+  return `${siteUrl}${path ? `/${path}` : '/'}`
+}
+
+const searchConsoleVerification = process.env.GOOGLE_SITE_VERIFICATION
+
 export default defineConfig({
   base: '/laravel-disposable-email/',
   title: 'Laravel Disposable Email',
@@ -7,7 +21,18 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   sitemap: {
-    hostname: 'https://erag.github.io/laravel-disposable-email'
+    hostname: siteOrigin,
+    transformItems: (items) => items.map((item) => {
+      const path = item.url.startsWith('/') ? item.url : `/${item.url}`
+      const url = path === '/' || !path.startsWith(siteBase)
+        ? `${siteBase}${path}`
+        : path
+
+      return {
+        ...item,
+        url
+      }
+    })
   },
   head: [
     ['meta', { name: 'theme-color', content: '#f53003' }],
@@ -23,7 +48,6 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'Laravel Disposable Email' }],
     ['meta', { property: 'og:title', content: 'Laravel Disposable Email' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:url', content: 'https://erag.github.io/laravel-disposable-email/' }],
     ['meta', { property: 'og:image', content: 'https://avatars.githubusercontent.com/u/72160684?v=4&size=64' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: 'Laravel Disposable Email' }],
@@ -48,15 +72,36 @@ export default defineConfig({
         rel: 'icon',
         href: 'https://avatars.githubusercontent.com/u/72160684?v=4&size=64'
       }
-    ],
-    [
-      'link',
-      {
-        rel: 'canonical',
-        href: 'https://erag.github.io/laravel-disposable-email/'
-      }
     ]
-  ],
+  ].concat(searchConsoleVerification ? [
+    ['meta', { name: 'google-site-verification', content: searchConsoleVerification }]
+  ] : []),
+  transformHead({ page }) {
+    const url = canonicalUrl(page)
+
+    return [
+      ['link', { rel: 'canonical', href: url }],
+      ['meta', { property: 'og:url', content: url }],
+      [
+        'script',
+        { type: 'application/ld+json' },
+        JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareSourceCode',
+          name: 'Laravel Disposable Email',
+          description: 'Disposable email detection for Laravel applications.',
+          url,
+          codeRepository: 'https://github.com/eramitgupta/laravel-disposable-email',
+          programmingLanguage: 'PHP',
+          license: 'https://opensource.org/licenses/MIT',
+          author: {
+            '@type': 'Person',
+            name: 'Er Amit Gupta'
+          }
+        })
+      ]
+    ]
+  },
   themeConfig: {
     nav: [
       { text: 'Get started', link: '/introduction' },

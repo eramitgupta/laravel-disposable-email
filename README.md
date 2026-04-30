@@ -4,6 +4,7 @@
 
 [![Packagist License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/eramitgupta/laravel-disposable-email/blob/main/LICENSE)
 [![Latest Stable Version](https://img.shields.io/packagist/v/erag/laravel-disposable-email?label=Stable)](https://packagist.org/packages/erag/laravel-disposable-email)
+[![Laravel Compatibility](https://badge.laravel.cloud/badge/erag/laravel-disposable-email)](https://packagist.org/packages/erag/laravel-disposable-email)
 [![Total Downloads](https://img.shields.io/packagist/dt/erag/laravel-disposable-email.svg?label=Downloads)](https://packagist.org/packages/erag/laravel-disposable-email)
 
 </div>
@@ -13,25 +14,6 @@ Laravel Disposable Email Detection is a Laravel package for detecting and blocki
 > **Already contains 110,646+ disposable email domains!** 🔥
 ---
 
-## Quick runtime check
-
-```php
-use Disposable;
-
-if (Disposable::Email('test@tempmail.com')) {
-    // Handle disposable email
-}
-
-if (Disposable::domain('test@tempmail.com')) {
-    // Handle disposable domain
-}
-
-$result = Disposable::check('test@tempmail.com');
-
-$result->disposable(); // true
-$result->domain(); // tempmail.com
-$result->source(); // built-in, custom, or whitelist
-```
 
 ## ✅ Features
 
@@ -55,13 +37,3 @@ $result->source(); // built-in, custom, or whitelist
 Complete documentation for installation, configuration, validation, syncing, caching, and troubleshooting is available at:
 
 https://eramitgupta.github.io/laravel-disposable-email/
-
-Deprecated and removed API notes for version `5.0.0`:
-
-https://eramitgupta.github.io/laravel-disposable-email/deprecated-5-0-0
-
-Maintainer script for updating the built-in `Email::domains()` array:
-
-```bash
-php scripts/update-built-in-domains.php
-```

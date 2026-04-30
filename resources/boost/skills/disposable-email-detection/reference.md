@@ -7,6 +7,7 @@
 - Facade alias: `Disposable`
 - Namespaced facade: `EragLaravelDisposableEmail\Facades\Disposable`
 - Blade conditional: `@disposableEmail(...)`
+- Deprecated notes: `/deprecated-5-0-0`
 - Install command: `php artisan erag:install-disposable-email`
 - Sync command: `php artisan erag:sync-disposable-email-list`
 - Stats command: `php artisan disposable:stats`

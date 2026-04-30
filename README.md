@@ -56,9 +56,9 @@ Complete documentation for installation, configuration, validation, syncing, cac
 
 https://eramitgupta.github.io/laravel-disposable-email/
 
-Deprecated and removed API notes for version `4.1.1`:
+Deprecated and removed API notes for version `5.0.0`:
 
-https://eramitgupta.github.io/laravel-disposable-email/deprecated-4-1-1
+https://eramitgupta.github.io/laravel-disposable-email/deprecated-5-0-0
 
 Maintainer script for updating the built-in `Email::domains()` array:
 

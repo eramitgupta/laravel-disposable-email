@@ -28,6 +28,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allowed Domains
+    |--------------------------------------------------------------------------
+    |
+    | Add domains here when you want to force them to pass even if they appear
+    | in the built-in or synced disposable domain lists.
+    |
+    */
+    'whitelist' => [
+        // 'example.com',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Block Subdomains
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, a blocked parent domain also blocks its subdomains.
+    | For example, "mail.tempmail.com" is blocked when "tempmail.com" exists.
+    |
+    */
+    'block_subdomains' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Enable or Disable Caching
     |--------------------------------------------------------------------------
     |

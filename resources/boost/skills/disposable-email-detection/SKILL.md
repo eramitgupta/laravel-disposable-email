@@ -14,12 +14,16 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 ## Working Rules
 
 - Prefer the built-in validation rule name `disposable_email` for standard request validation in controllers, Form Requests, APIs, and manual validators.
-- Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object or direct runtime check is clearer.
-- Use the `DisposableEmail` facade when the codebase already favors facade-style package access.
+- Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object is clearer.
+- Use the `Disposable` facade for runtime checks, detailed checks, domain checks, and facade-style validation rules.
 - Use `@disposableEmail(...)` only for Blade branching, not as a replacement for request validation.
 - Use `php artisan erag:install-disposable-email` before instructing users to edit `config/disposable-email.php`.
 - Use `php artisan erag:sync-disposable-email-list` when the task is about refreshing remote domain lists from configured sources.
+- Use `php scripts/update-built-in-domains.php` only when maintaining this package repository and updating the built-in `Email::domains()` source array.
+- Use `php artisan disposable:stats` when the task is about inspecting loaded domains, whitelist count, cache status, remote source count, or last synced time.
 - Treat `config('disposable-email.remote_url')` as the source of truth for sync inputs.
+- Treat `config('disposable-email.whitelist')` as the source of truth for trusted domains that should always pass.
+- Treat `config('disposable-email.block_subdomains')` as the source of truth for parent-domain subdomain blocking.
 - Put custom domains in the configured blacklist directory as plain domains, one per line, in `.txt` files.
 - Mention scheduling separately when the user wants automatic syncs. Use Laravel's scheduler with `erag:sync-disposable-email-list`.
 - Mention caching separately when the user wants repeated lookups optimized or config changes reflected.
@@ -32,8 +36,15 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 - The config file is `config/disposable-email.php`.
 - The default blacklist directory is `storage/app/blacklist_file`.
 - Remote sync sources are configured through `remote_url`.
+- The built-in `Email::domains()` source array is updated by `scripts/update-built-in-domains.php` from the canonical GitHub raw list.
+- Trusted domains are configured through `whitelist`.
+- Subdomain matching is configured through `block_subdomains`.
 - The package reads every `.txt` file in the configured blacklist directory.
 - The package accepts plain domains and also normalizes `user@domain.tld` style entries down to their domain when loading local text files.
+- `Disposable::Email($email)` returns a boolean for email checks.
+- `Disposable::domain($domainOrEmail)` returns a boolean for domain checks.
+- `Disposable::check($domainOrEmail)` returns a detailed result object with `disposable()`, `domain()`, `matchedDomain()`, `source()`, `whitelisted()`, and `toArray()`.
+- `Disposable::rule()` and `Disposable::make()` return a validation rule instance.
 
 ## Output Expectations
 

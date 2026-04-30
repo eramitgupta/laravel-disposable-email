@@ -29,6 +29,7 @@ class Email
     public static function clearCache(): void
     {
         Cache::forget('erag-unauthorized-email-providers');
+        Cache::forget('erag-unauthorized-email-provider-sources');
     }
 
     public static function domains(): array

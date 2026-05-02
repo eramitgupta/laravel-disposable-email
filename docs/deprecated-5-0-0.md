@@ -26,7 +26,7 @@ Use `Disposable` instead:
 ```php
 use Disposable;
 
-Disposable::Email('test@tempmail.com');
+Disposable::email('test@tempmail.com');
 Disposable::domain('test@tempmail.com');
 ```
 
@@ -35,7 +35,7 @@ Or import the package facade by namespace:
 ```php
 use EragLaravelDisposableEmail\Facades\Disposable;
 
-Disposable::Email('test@tempmail.com');
+Disposable::email('test@tempmail.com');
 Disposable::domain('test@tempmail.com');
 ```
 
@@ -50,14 +50,14 @@ DisposableEmail::isDisposable($email);
 The package now registers this alias:
 
 ```php
-Disposable::Email($email);
+Disposable::email($email);
 Disposable::domain($emailOrDomain);
 ```
 
 The same methods are available through the namespaced facade:
 
 ```php
-EragLaravelDisposableEmail\Facades\Disposable::Email($email);
+EragLaravelDisposableEmail\Facades\Disposable::email($email);
 EragLaravelDisposableEmail\Facades\Disposable::domain($emailOrDomain);
 ```
 
@@ -78,7 +78,7 @@ With:
 ```php
 use Disposable;
 
-if (Disposable::Email($email)) {
+if (Disposable::email($email)) {
     // Handle disposable email
 }
 ```
@@ -92,7 +92,7 @@ Replace API responses:
 With:
 
 ```php
-'disposable' => Disposable::Email($email),
+'disposable' => Disposable::email($email),
 ```
 
 ## Domain checks

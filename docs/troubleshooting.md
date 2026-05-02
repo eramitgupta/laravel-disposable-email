@@ -150,7 +150,7 @@ If you want to confirm a result in your own code, use a direct runtime check:
 ```php
 use Disposable;
 
-$isDisposable = Disposable::Email('test@tempmail.com');
+$isDisposable = Disposable::email('test@tempmail.com');
 ```
 
 You can also use the namespaced facade:
@@ -158,7 +158,7 @@ You can also use the namespaced facade:
 ```php
 use EragLaravelDisposableEmail\Facades\Disposable;
 
-$isDisposable = Disposable::Email('test@tempmail.com');
+$isDisposable = Disposable::email('test@tempmail.com');
 ```
 
 This is often the fastest way to confirm whether the package is seeing the domain the way you expect.

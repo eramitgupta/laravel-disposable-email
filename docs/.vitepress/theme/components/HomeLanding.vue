@@ -52,7 +52,7 @@ import { withBase } from 'vitepress'
           <span></span>
           <span></span>
         </div>
-        <pre class="home-code-body"><span>composer require erag/laravel-disposable-email</span><span>php artisan erag:install-disposable-email</span><span></span><span>$request-&gt;validate([</span><span>    'email' =&gt; ['required', 'email', 'disposable_email'],</span><span>]);</span><span></span><span>if (Disposable::Email($email)) {</span><span>    // stop temp inboxes early</span><span>}</span></pre>
+        <pre class="home-code-body"><span>composer require erag/laravel-disposable-email</span><span>php artisan erag:install-disposable-email</span><span></span><span>$request-&gt;validate([</span><span>    'email' =&gt; ['required', 'email', 'disposable_email'],</span><span>]);</span><span></span><span>if (Disposable::email($email)) {</span><span>    // stop temp inboxes early</span><span>}</span></pre>
       </div>
     </div>
 
@@ -92,13 +92,13 @@ import { withBase } from 'vitepress'
           Use the new <code>Disposable</code> facade for quick checks, inspect detailed match
           results when you need more context, and manage trusted or subdomain behavior from config.
         </p>
-        <pre class="home-release-code"><span>Disposable::Email('test@tempmail.com');</span><span>Disposable::domain('tempmail.com');</span><span>$result = Disposable::check($email);</span></pre>
+        <pre class="home-release-code"><span>Disposable::email('test@tempmail.com');</span><span>Disposable::Email('test@tempmail.com');</span><span>$result = Disposable::Check($email);</span></pre>
       </div>
       <div class="home-release-list">
         <div>
           <span>API</span>
           <strong>Short facade methods</strong>
-          <p><code>Email</code>, <code>domain</code>, <code>check</code>, and <code>rule</code>.</p>
+          <p><code>email</code>, <code>Email</code>, <code>check</code>, <code>Check</code>, and <code>rule</code>.</p>
         </div>
         <div>
           <span>RESULT</span>
@@ -167,7 +167,7 @@ import { withBase } from 'vitepress'
         </div>
         <div class="home-example-card">
           <strong>Facade</strong>
-          <pre class="home-example-code"><span>use Disposable;</span><span></span><span>if (Disposable::Email($email)) {</span><span>    throw ValidationException::withMessages([</span><span>        'email' =&gt; 'Use a permanent inbox.'</span><span>    ]);</span><span>}</span></pre>
+          <pre class="home-example-code"><span>use Disposable;</span><span></span><span>if (Disposable::email($email)) {</span><span>    throw ValidationException::withMessages([</span><span>        'email' =&gt; 'Use a permanent inbox.'</span><span>    ]);</span><span>}</span></pre>
         </div>
         <div class="home-example-card">
           <strong>Blade</strong>

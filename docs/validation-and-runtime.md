@@ -191,7 +191,7 @@ Use the short facade when you need a simple boolean result outside request valid
 ```php
 use Disposable;
 
-if (Disposable::Email('test@tempmail.com')) {
+if (Disposable::email('test@tempmail.com')) {
     // Handle disposable email
 }
 
@@ -205,19 +205,20 @@ You can also import the package facade namespace directly:
 ```php
 use EragLaravelDisposableEmail\Facades\Disposable;
 
-if (Disposable::Email('test@tempmail.com')) {
+if (Disposable::email('test@tempmail.com')) {
     // Handle disposable email
 }
 ```
 
 ## 10. Detailed runtime check <span class="doc-new-badge">New</span> {#detailed-runtime-check}
 
-Use `Disposable::check()` when you need more than a boolean:
+Use `Disposable::check()` when you need more than a boolean. `Disposable::Check()` also works as a case-insensitive alias:
 
 ```php
 use Disposable;
 
 $result = Disposable::check('test@tempmail.com');
+$sameResult = Disposable::Check('test@tempmail.com');
 
 $result->disposable(); // true
 $result->domain(); // tempmail.com
@@ -244,7 +245,7 @@ class SignupPolicy
 {
     public function assertAllowedEmail(string $email): void
     {
-        if (Disposable::Email($email)) {
+        if (Disposable::email($email)) {
             throw ValidationException::withMessages([
                 'email' => 'Please use a permanent email address.',
             ]);
@@ -260,7 +261,7 @@ If you prefer the short facade style, you can use:
 ```php
 use Disposable;
 
-if (Disposable::Email('amit@agedmail.com')) {
+if (Disposable::email('amit@agedmail.com')) {
     // Handle disposable email
 }
 ```
@@ -282,7 +283,7 @@ Route::post('/email/check', function (Request $request) {
 
     return response()->json([
         'email' => $email,
-        'disposable' => Disposable::Email($email),
+        'disposable' => Disposable::email($email),
     ]);
 });
 ```

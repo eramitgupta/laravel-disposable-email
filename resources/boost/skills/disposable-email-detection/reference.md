@@ -143,7 +143,7 @@ Boolean email check:
 ```php
 use Disposable;
 
-if (Disposable::Email($email)) {
+if (Disposable::email($email)) {
     abort(422, 'Disposable email addresses are not allowed.');
 }
 ```
@@ -162,7 +162,7 @@ Namespaced facade:
 ```php
 use EragLaravelDisposableEmail\Facades\Disposable;
 
-Disposable::Email($email);
+Disposable::email($email);
 Disposable::domain($email);
 ```
 
@@ -172,6 +172,7 @@ Detailed check:
 use Disposable;
 
 $result = Disposable::check('test@tempmail.com');
+$sameResult = Disposable::Check('test@tempmail.com');
 
 $result->disposable();
 $result->domain();
@@ -190,7 +191,7 @@ class SignupGuard
 {
     public function ensureRealMailbox(string $email): void
     {
-        if (Disposable::Email($email)) {
+        if (Disposable::email($email)) {
             throw new InvalidArgumentException('Disposable email addresses are not allowed.');
         }
     }

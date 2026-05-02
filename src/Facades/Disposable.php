@@ -7,7 +7,7 @@ use EragLaravelDisposableEmail\Support\DisposableEmailResult;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static bool Email(string $email)
+ * @method static bool email(string $email)
  * @method static bool domain(string $emailOrDomain)
  * @method static DisposableEmailResult check(string $emailOrDomain)
  * @method static DisposableEmailRule rule()

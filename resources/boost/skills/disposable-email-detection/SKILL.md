@@ -41,9 +41,9 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 - Subdomain matching is configured through `block_subdomains`.
 - The package reads every `.txt` file in the configured blacklist directory.
 - The package accepts plain domains and also normalizes `user@domain.tld` style entries down to their domain when loading local text files.
-- `Disposable::Email($email)` returns a boolean for email checks.
+- `Disposable::email($email)` returns a boolean for email checks. `Disposable::Email($email)` also works as a case-insensitive alias.
 - `Disposable::domain($domainOrEmail)` returns a boolean for domain checks.
-- `Disposable::check($domainOrEmail)` returns a detailed result object with `disposable()`, `domain()`, `matchedDomain()`, `source()`, `whitelisted()`, and `toArray()`.
+- `Disposable::check($domainOrEmail)` returns a detailed result object with `disposable()`, `domain()`, `matchedDomain()`, `source()`, `whitelisted()`, and `toArray()`. `Disposable::Check($domainOrEmail)` also works as a case-insensitive alias.
 - `Disposable::rule()` and `Disposable::make()` return a validation rule instance.
 
 ## Output Expectations

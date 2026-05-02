@@ -92,13 +92,13 @@ import { withBase } from 'vitepress'
           Use the new <code>Disposable</code> facade for quick checks, inspect detailed match
           results when you need more context, and manage trusted or subdomain behavior from config.
         </p>
-        <pre class="home-release-code"><span>Disposable::email('test@tempmail.com');</span><span>Disposable::Email('test@tempmail.com');</span><span>$result = Disposable::Check($email);</span></pre>
+        <pre class="home-release-code"><span>Disposable::email('test@tempmail.com');</span><span>Disposable::domain('tempmail.com');</span><span>$result = Disposable::check($email);</span></pre>
       </div>
       <div class="home-release-list">
         <div>
           <span>API</span>
           <strong>Short facade methods</strong>
-          <p><code>email</code>, <code>Email</code>, <code>check</code>, <code>Check</code>, and <code>rule</code>.</p>
+          <p><code>email</code>, <code>domain</code>, and <code>check</code>.</p>
         </div>
         <div>
           <span>RESULT</span>

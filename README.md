@@ -14,6 +14,9 @@ Laravel Disposable Email Detection is a Laravel package for detecting and blocki
 > **Already contains 110,646+ disposable email domains!** 🔥
 ---
 
+```bash
+composer require erag/laravel-disposable-email
+```
 
 ## ✅ Features
 

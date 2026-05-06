@@ -1,7 +1,6 @@
 import { defineConfig } from 'vitepress'
 
 const siteUrl = 'https://eramitgupta.github.io/laravel-disposable-email'
-const siteOrigin = 'https://eramitgupta.github.io'
 const siteBase = '/laravel-disposable-email'
 
 const canonicalUrl = (page: string): string => {
@@ -18,10 +17,10 @@ export default defineConfig({
   base: '/laravel-disposable-email/',
   title: 'Laravel Disposable Email',
   description: 'Disposable email detection for Laravel applications.',
-  cleanUrls: true,
+  cleanUrls: false,
   lastUpdated: true,
   sitemap: {
-    hostname: siteOrigin,
+    hostname: siteUrl,
     transformItems: (items) => items.map((item) => {
       const path = item.url.startsWith('/') ? item.url : `/${item.url}`
       const url = path === '/' || !path.startsWith(siteBase)

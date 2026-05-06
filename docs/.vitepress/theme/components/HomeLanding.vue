@@ -14,8 +14,8 @@ import { withBase } from 'vitepress'
         support, custom blacklist support, and optional caching for faster lookups.
       </p>
       <div class="quick-links">
-        <a :href="withBase('/getting-started')">Get started</a>
-        <a :href="withBase('/validation-and-runtime')">See validation examples</a>
+        <a :href="withBase('/getting-started.html')">Get started</a>
+        <a :href="withBase('/validation-and-runtime.html')">See validation examples</a>
         <a href="https://github.com/eramitgupta/laravel-disposable-email">GitHub</a>
       </div>
     </div>
@@ -184,10 +184,10 @@ import { withBase } from 'vitepress'
         syncing, and caching to set up a complete disposable email blocking workflow.
       </p>
       <div class="quick-links">
-        <a :href="withBase('/getting-started')">Installation guide</a>
-        <a :href="withBase('/configuration')">Configuration options</a>
-        <a :href="withBase('/sync-and-blacklist')">Sync and blacklist</a>
-        <a :href="withBase('/caching')">Caching notes</a>
+        <a :href="withBase('/getting-started.html')">Installation guide</a>
+        <a :href="withBase('/configuration.html')">Configuration options</a>
+        <a :href="withBase('/sync-and-blacklist.html')">Sync and blacklist</a>
+        <a :href="withBase('/caching.html')">Caching notes</a>
       </div>
     </div>
   </div>

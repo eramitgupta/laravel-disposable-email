@@ -8,7 +8,7 @@ const canonicalUrl = (page: string): string => {
     .replace(/(^|\/)index\.md$/, '$1')
     .replace(/\.md$/, '')
 
-  return `${siteUrl}${path ? `/${path}` : '/'}`
+  return `${siteUrl}${path ? `/${path}.html` : '/index.html'}`
 }
 
 const searchConsoleVerification = 'OZHlBl5qnZRHEArDBmPQeDqrhUr0K32DjQDZ8YxrtuM'
@@ -23,9 +23,10 @@ export default defineConfig({
     hostname: siteUrl,
     transformItems: (items) => items.map((item) => {
       const path = item.url.startsWith('/') ? item.url : `/${item.url}`
-      const url = path === '/' || !path.startsWith(siteBase)
-        ? `${siteBase}${path}`
-        : path
+      const normalizedPath = path === '/' ? '/index.html' : path
+      const url = !normalizedPath.startsWith(siteBase)
+        ? `${siteBase}${normalizedPath}`
+        : normalizedPath
 
       return {
         ...item,
@@ -102,29 +103,30 @@ export default defineConfig({
     ]
   },
   themeConfig: {
+    logoLink: `${siteBase}/index.html`,
     nav: [
-      { text: 'Get started', link: '/introduction' },
+      { text: 'Get started', link: '/introduction.html' },
     ],
     sidebar: [
       {
         text: 'Docs',
         items: [
-          { text: 'Overview', link: '/' },
-          { text: 'Introduction', link: '/introduction' },
-          { text: 'Installation', link: '/getting-started' },
-          { text: 'Config', link: '/configuration' }
+          { text: 'Overview', link: '/index.html' },
+          { text: 'Introduction', link: '/introduction.html' },
+          { text: 'Installation', link: '/getting-started.html' },
+          { text: 'Config', link: '/configuration.html' }
         ]
       },
       {
         text: 'Usage',
         items: [
-          { text: 'Validation and Runtime', link: '/validation-and-runtime' },
-          { text: 'Sync and Blacklist', link: '/sync-and-blacklist' },
-          { text: 'Schedule Sync', link: '/schedule-syncing-automatically' },
-          { text: 'Caching', link: '/caching' },
-          { text: 'Troubleshooting', link: '/troubleshooting' },
-          { text: 'Contributing', link: '/contributing' },
-          { text: 'Deprecated 5.0.0', link: '/deprecated-5-0-0' }
+          { text: 'Validation and Runtime', link: '/validation-and-runtime.html' },
+          { text: 'Sync and Blacklist', link: '/sync-and-blacklist.html' },
+          { text: 'Schedule Sync', link: '/schedule-syncing-automatically.html' },
+          { text: 'Caching', link: '/caching.html' },
+          { text: 'Troubleshooting', link: '/troubleshooting.html' },
+          { text: 'Contributing', link: '/contributing.html' },
+          { text: 'Deprecated 5.0.0', link: '/deprecated-5-0-0.html' }
         ]
       }
     ],

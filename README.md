@@ -20,7 +20,7 @@ composer require erag/laravel-disposable-email
 
 ## ✅ Features
 
-* 🔥 **110,646+ known disposable domains** already included
+* 🔥 **110,880+ known disposable domains** already included
 * 🧠 **Smart validation rule** for form requests
 * ⚙️ **Runtime email checking** via helper and facade
 * 🧩 **Blade directive** support for conditionals

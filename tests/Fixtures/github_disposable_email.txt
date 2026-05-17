@@ -1,0 +1,4 @@
+defaultblockeddomain.com
+someother1234blocked.xyz
+baddomain.com
+l4r4v3l.xyz

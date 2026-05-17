@@ -1,0 +1,66 @@
+name: Run Tests
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.5, 8.4, 8.3, 8.2, 8.1]
+        laravel: ['13.*', '12.*', '11.*']
+        dependency-version: [prefer-stable]
+        
+        include:
+          - laravel: 11.*
+            testbench: 9.*
+          - laravel: 12.*
+            testbench: 10.*
+          - laravel: 13.*
+            testbench: 11.*
+        exclude:
+          # Laravel 11 requires PHP 8.2+
+           - laravel: 11.*
+             php: 8.1
+          # Laravel 12 requires PHP 8.2+
+           - laravel: 12.*
+             php: 8.1
+          # Laravel 13 requires PHP 8.3+
+           - laravel: 13.*
+             php: 8.1
+           - laravel: 13.*
+             php: 8.2
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          coverage: none
+
+      - name: Setup Composer Cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.composer/cache
+          key: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ matrix.os }}-php-${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+
+      - name: Run Pest tests
+        run: composer test:unit

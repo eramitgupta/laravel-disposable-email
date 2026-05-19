@@ -1,0 +1,7 @@
+00foobar.com
+foobaremail.com
+foo.bar.com
+0-1-2-4-4.com
+invaliddomain.local
+invaliddomain.test
+foobar.qq

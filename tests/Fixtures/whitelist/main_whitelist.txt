@@ -1,0 +1,3 @@
+trusted-domain.com
+laravel.com
+pestphp.com

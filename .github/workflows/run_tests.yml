@@ -7,16 +7,16 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
       fail-fast: false
-      
+
       matrix:
         os: [ubuntu-latest]
         php: [8.5, 8.4, 8.3, 8.2, 8.1]
         laravel: ['13.*', '12.*', '11.*']
         dependency-version: [prefer-stable]
-        
+
         include:
           - laravel: 11.*
             testbench: 9.*
@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+          composer update --${{ matrix.dependency-version }}  --no-interaction --prefer-dist
 
       - name: Run Pest tests
         run: composer test:unit

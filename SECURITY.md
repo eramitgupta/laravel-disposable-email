@@ -15,10 +15,6 @@ We release security updates for the latest major version. Please always use the 
 
 If you discover a security issue or vulnerability, **please do not create a public issue**.
 
-Instead, email us privately:
-
-📧 **Email**: info.eramitgupta@gmail.com
-
 We will:
 
 - Respond within 48 hours

@@ -39,4 +39,4 @@ composer require erag/laravel-disposable-email
 
 Complete documentation for installation, configuration, validation, syncing, caching, and troubleshooting is available at:
 
-https://eramitgupta.github.io/laravel-disposable-email/
+https://erag.in/laravel-disposable-email/

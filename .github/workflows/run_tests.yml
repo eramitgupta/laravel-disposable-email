@@ -4,40 +4,49 @@ on:
   - push
   - pull_request
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
 
       matrix:
-        os: [ubuntu-latest]
         php: [8.5, 8.4, 8.3, 8.2, 8.1]
-        laravel: ['13.*', '12.*', '11.*']
-        dependency-version: [prefer-stable]
+        laravel: ['11.*', '12.*', '13.*']
 
         include:
-          - laravel: 11.*
-            testbench: 9.*
-          - laravel: 12.*
-            testbench: 10.*
-          - laravel: 13.*
-            testbench: 11.*
+          - laravel: '11.*'
+            testbench: '^9.17'
+            pest: '^3.7'
+
+          - laravel: '12.*'
+            testbench: '^10.8'
+            pest: '^4.0'
+
+          - laravel: '13.*'
+            testbench: '^11.0'
+            pest: '^4.1'
+
         exclude:
           # Laravel 11 requires PHP 8.2+
-           - laravel: 11.*
-             php: 8.1
+          - laravel: '11.*'
+            php: 8.1
           # Laravel 12 requires PHP 8.2+
-           - laravel: 12.*
-             php: 8.1
+          - laravel: '12.*'
+            php: 8.1
+          - laravel: '12.*'
+            php: 8.2
           # Laravel 13 requires PHP 8.3+
-           - laravel: 13.*
-             php: 8.1
-           - laravel: 13.*
-             php: 8.2
+          - laravel: '13.*'
+            php: 8.1
+          - laravel: '13.*'
+            php: 8.2
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -54,13 +63,32 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.composer/cache
-          key: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ matrix.os }}-php-${{ matrix.php }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+      - name: Composer config (secure)
+        run: |
+          composer config allow-plugins.pestphp/pest-plugin true
+          composer config allow-plugins.pestphp/pest-plugin-laravel true
+          composer config policy.advisories.block false
+
+      - name: Validate composer.json
+        run: composer validate --strict
 
       - name: Install dependencies
+        env:
+          COMPOSER_NO_INTERACTION: 1
+          COMPOSER_DISCARD_CHANGES: 1
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }}  --no-interaction --prefer-dist
+          composer require --dev orchestra/testbench:${{ matrix.testbench }} pestphp/pest:${{ matrix.pest }} --no-update --no-interaction
+
+          composer update \
+            --prefer-stable \
+            --prefer-dist \
+            --no-interaction \
+            --no-audit \
+            --with-all-dependencies
 
       - name: Run Pest tests
         run: composer test:unit

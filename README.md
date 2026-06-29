@@ -11,14 +11,21 @@
 
 Laravel Disposable Email Detection is a Laravel package for detecting and blocking disposable email addresses during validation and runtime checks. It helps protect registrations, lead forms, and application workflows from temporary inbox abuse.
 
-> **Already contains 110,880+ disposable email domains!** 🔥
+> **Already contains 110,880+ disposable email domains!**
+
 ---
+
+## Installation
 
 ```bash
 composer require erag/laravel-disposable-email
 ```
 
-## ✅ Features
+Publish the configuration:
+
+```bash
+php artisan erag:install-disposable-email
+```
 
 * 🔥 **110,880+ known disposable domains** already included
 * 🧠 **Smart validation rule** for form requests
@@ -40,3 +47,7 @@ composer require erag/laravel-disposable-email
 Complete documentation for installation, configuration, validation, syncing, caching, and troubleshooting is available at:
 
 https://erag.in/laravel-disposable-email/
+
+## ⭐ Support
+
+If you like this package, give it a GitHub star.

@@ -28,6 +28,7 @@ php artisan erag:install-disposable-email
 ```
 
 * 🔥 **110,880+ known disposable domains** already included
+* 🔄 Daily auto-sync from multiple trusted GitHub disposable email blocklists
 * 🧠 **Smart validation rule** for form requests
 * ⚙️ **Runtime email checking** via helper and facade
 * 🧩 **Blade directive** support for conditionals
@@ -47,6 +48,33 @@ php artisan erag:install-disposable-email
 Complete documentation for installation, configuration, validation, syncing, caching, and troubleshooting is available at:
 
 https://erag.in/laravel-disposable-email/
+
+
+## 🔄 Data Sources & Daily Updates
+
+This repository combines multiple trusted open-source disposable email blocklists into a single clean, normalized, and duplicate-free dataset.
+
+### Sources
+
+The list is automatically generated from well-maintained community projects, including:
+
+- https://github.com/disposable-email-domains/disposable-email-domains
+- https://github.com/7c/fakefilter
+- https://github.com/FGRibreau/mailchecker
+- https://github.com/wesbos/burner-email-providers
+
+### Automatic Updates
+
+A GitHub Actions workflow runs **every day** to:
+
+- 📥 Fetch the latest domains from all sources
+- 🧹 Normalize domain names
+- 🔍 Remove duplicates and invalid entries
+- 📦 Generate the final blocklist
+- 🚀 Commit updates only when changes are detected
+
+This ensures the repository always provides an up-to-date disposable email blocklist with minimal maintenance.
+
 
 ## ⭐ Support
 

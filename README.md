@@ -52,7 +52,7 @@ https://erag.in/laravel-disposable-email/
 
 ## 🔄 Data Sources & Daily Updates
 
-This package uses the official **ERAG Disposable Email Blocklist**, a self-developed and actively maintained repository.
+This package uses the official **Disposable Email Blocklist**, a self-developed and actively maintained repository.
 
 ### Source
 

@@ -52,26 +52,24 @@ https://erag.in/laravel-disposable-email/
 
 ## 🔄 Data Sources & Daily Updates
 
-This repository combines multiple trusted open-source disposable email blocklists into a single clean, normalized, and duplicate-free dataset.
+This package uses the official **ERAG Disposable Email Blocklist**, a self-developed and actively maintained repository.
 
-### Sources
+### Source
 
-The list is automatically generated from well-maintained community projects, including:
-
-- 📥 Uses the official Disposable Email Blocklist  
+- 📦 Official Blocklist Repository  
   https://github.com/eramitgupta/disposable-email
 
 ### Automatic Updates
 
-A GitHub Actions workflow runs **every day** to:
+The blocklist repository is updated **every day** via GitHub Actions to:
 
-- 📥 Fetch the latest domains from all sources
-- 🧹 Normalize domain names
+- 📥 Fetch the latest disposable email domains
+- 🧹 Normalize and clean domain names
 - 🔍 Remove duplicates and invalid entries
-- 📦 Generate the final blocklist
-- 🚀 Commit updates only when changes are detected
+- 📦 Generate the latest blocklist
+- 🚀 Publish changes automatically
 
-This ensures the repository always provides an up-to-date disposable email blocklist with minimal maintenance.
+This package always uses the latest version of the maintained blocklist.
 
 
 ## ⭐ Support

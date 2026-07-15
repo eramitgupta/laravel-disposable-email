@@ -100,7 +100,7 @@ class UpdateDisposableEmailList extends Command
         $this->line("Fetching: {$url}");
 
         try {
-            $response = Http::timeout(0)->retry(2, 500)->get($url);
+            $response = Http::timeout($this->syncTimeout())->retry(2, 500)->get($url);
         } catch (Throwable $exception) {
             $this->error("Request failed for [{$url}]: {$exception->getMessage()}");
 
@@ -135,6 +135,19 @@ class UpdateDisposableEmailList extends Command
         $this->info('Saved '.number_format(count($domains))." domains to {$filePath}");
 
         return true;
+    }
+
+    protected function syncTimeout(): int
+    {
+        $timeout = config('disposable-email.sync_timeout', 30);
+
+        if (! is_numeric($timeout)) {
+            return 30;
+        }
+
+        $timeout = (int) $timeout;
+
+        return $timeout > 0 ? $timeout : 30;
     }
 
     /**

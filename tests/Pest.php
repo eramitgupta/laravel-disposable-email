@@ -1,10 +1,10 @@
 <?php
 
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as IlluminateValidator;
+use LaravelDisposableEmail\Rules\DisposableEmail;
 use Tests\TestCase;
 
 use function Pest\Laravel\artisan;
@@ -255,16 +255,16 @@ if (! function_exists('malformed_email')) {
     }
 }
 
-if (! function_exists('DisposableEmailRule')) {
+if (! function_exists('DisposableEmail')) {
 
     /**
-     * Laravel Validator with DisposableEmailRule for email field
+     * Laravel Validator with DisposableEmail for email field
      */
-    function DisposableEmailRule(string $emailAddress): IlluminateValidator
+    function DisposableEmail(string $emailAddress): IlluminateValidator
     {
         return Validator::make(
             ['email' => $emailAddress],
-            ['email' => new DisposableEmailRule]
+            ['email' => new DisposableEmail]
         );
     }
 }

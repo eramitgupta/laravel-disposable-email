@@ -1,7 +1,7 @@
 <?php
 
-use EragLaravelDisposableEmail\Commands\UpdateDisposableEmailList;
 use Illuminate\Support\Facades\Http;
+use LaravelDisposableEmail\Commands\Sync;
 
 it('updates emails database via artisan command')
     ->artisan('erag:sync-disposable-email-list')
@@ -36,7 +36,7 @@ function sync_timeout(mixed $timeout = null): int
         config()->set('disposable-email.sync_timeout', $timeout);
     }
 
-    $command = new UpdateDisposableEmailList;
+    $command = new Sync;
     $method = new ReflectionMethod($command, 'syncTimeout');
     $method->setAccessible(true);
 

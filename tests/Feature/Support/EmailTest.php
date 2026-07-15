@@ -1,8 +1,8 @@
 <?php
 
-use EragLaravelDisposableEmail\Support\Email;
+use LaravelDisposableEmail\Data\BuiltInDomains;
 
 test('All built-in domains entries are valid domains')
-    ->expect(Email::domains())
+    ->expect(BuiltInDomains::all())
     ->each()
     ->toBeValidDomain();

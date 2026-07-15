@@ -23,7 +23,6 @@
     "authors": [
         {
             "name": "Er Amiit Gupta",
-            "email": "info.eramitgupta@gmail.com",
             "homepage": "https://github.com/eramitgupta"
         }
     ],
@@ -44,7 +43,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EragLaravelDisposableEmail\\": "src/"
+            "LaravelDisposableEmail\\": "src/"
         }
     },
     "autoload-dev": {
@@ -65,10 +64,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "EragLaravelDisposableEmail\\LaravelDisposableEmailServiceProvider"
+                "LaravelDisposableEmail\\DisposableEmailServiceProvider"
             ],
             "aliases": {
-                "Disposable": "EragLaravelDisposableEmail\\Facades\\Disposable"
+                "Disposable": "LaravelDisposableEmail\\Facades\\Disposable"
             }
         }
     },

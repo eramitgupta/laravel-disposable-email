@@ -1,22 +1,31 @@
 <?php
 
-namespace EragLaravelDisposableEmail\Facades;
+namespace LaravelDisposableEmail\Facades;
 
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
-use EragLaravelDisposableEmail\Support\DisposableEmailResult;
 use Illuminate\Support\Facades\Facade;
+use LaravelDisposableEmail\Contracts\Checker;
+use LaravelDisposableEmail\Rules\DisposableEmail;
+use LaravelDisposableEmail\Support\Result;
 
 /**
  * @method static bool email(string $email)
  * @method static bool domain(string $emailOrDomain)
- * @method static DisposableEmailResult check(string $emailOrDomain)
- * @method static DisposableEmailRule rule()
- * @method static DisposableEmailRule make()
+ * @method static Result check(string $emailOrDomain)
  */
 class Disposable extends Facade
 {
+    public static function rule(): DisposableEmail
+    {
+        return new DisposableEmail(app(Checker::class));
+    }
+
+    public static function make(): DisposableEmail
+    {
+        return self::rule();
+    }
+
     protected static function getFacadeAccessor(): string
     {
-        return 'disposable-email';
+        return Checker::class;
     }
 }

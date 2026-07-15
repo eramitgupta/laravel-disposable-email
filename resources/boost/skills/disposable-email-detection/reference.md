@@ -3,15 +3,20 @@
 ## Package Surface
 
 - Validation rule string: `disposable_email`
-- Rule class: `EragLaravelDisposableEmail\Rules\DisposableEmailRule`
+- Rule class: `LaravelDisposableEmail\Rules\DisposableEmail`
 - Facade alias: `Disposable`
-- Namespaced facade: `EragLaravelDisposableEmail\Facades\Disposable`
+- Namespaced facade: `LaravelDisposableEmail\Facades\Disposable`
+- Service provider: `LaravelDisposableEmail\DisposableEmailServiceProvider`
+- Checker contract: `LaravelDisposableEmail\Contracts\Checker`
+- Loader contract: `LaravelDisposableEmail\Contracts\Loader`
+- Matcher contract: `LaravelDisposableEmail\Contracts\Matcher`
+- Built-in domains: `LaravelDisposableEmail\Data\BuiltInDomains`
 - Blade conditional: `@disposableEmail(...)`
 - Deprecated notes: `/deprecated-5-0-0`
 - Install command: `php artisan erag:install-disposable-email`
 - Sync command: `php artisan erag:sync-disposable-email-list`
 - Stats command: `php artisan disposable:stats`
-- Built-in array update script: `php scripts/update-built-in-domains.php`
+- Built-in domains source: `LaravelDisposableEmail\Data\BuiltInDomains::all()`
 - Config file: `config/disposable-email.php`
 - Default blacklist directory: `storage/app/blacklist_file`
 
@@ -25,11 +30,11 @@ php artisan erag:install-disposable-email
 Laravel 11, 12, and 13 can register the service provider in `bootstrap/providers.php` if needed:
 
 ```php
-use EragLaravelDisposableEmail\LaravelDisposableEmailServiceProvider;
+use LaravelDisposableEmail\DisposableEmailServiceProvider;
 
 return [
     // ...
-    LaravelDisposableEmailServiceProvider::class,
+    DisposableEmailServiceProvider::class,
 ];
 ```
 
@@ -38,7 +43,7 @@ Laravel 10 can register it in `config/app.php`:
 ```php
 'providers' => [
     // ...
-    EragLaravelDisposableEmail\LaravelDisposableEmailServiceProvider::class,
+    LaravelDisposableEmail\DisposableEmailServiceProvider::class,
 ],
 ```
 
@@ -69,10 +74,10 @@ $request->validate([
 Explicit rule object:
 
 ```php
-use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+use LaravelDisposableEmail\Rules\DisposableEmail;
 
 $request->validate([
-    'email' => ['required', 'email', new DisposableEmailRule()],
+    'email' => ['required', 'email', new DisposableEmail()],
 ]);
 ```
 
@@ -160,7 +165,7 @@ Disposable::domain('test@tempmail.com');
 Namespaced facade:
 
 ```php
-use EragLaravelDisposableEmail\Facades\Disposable;
+use LaravelDisposableEmail\Facades\Disposable;
 
 Disposable::email($email);
 Disposable::domain($email);

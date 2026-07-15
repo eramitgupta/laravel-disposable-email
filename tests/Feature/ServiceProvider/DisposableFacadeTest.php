@@ -1,6 +1,6 @@
 <?php
 
-use EragLaravelDisposableEmail\Facades\Disposable;
+use LaravelDisposableEmail\Facades\Disposable;
 
 test('Disposable Facade - Email Check')
     ->expect(fn () => Disposable::email(default_blacklisted_email()))->toBeTrue()

@@ -14,12 +14,12 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 ## Working Rules
 
 - Prefer the built-in validation rule name `disposable_email` for standard request validation in controllers, Form Requests, APIs, and manual validators.
-- Use `EragLaravelDisposableEmail\Rules\DisposableEmailRule` when an explicit rule object is clearer.
+- Use `LaravelDisposableEmail\Rules\DisposableEmail` when an explicit rule object is clearer.
 - Use the `Disposable` facade for runtime checks, detailed checks, domain checks, and facade-style validation rules.
 - Use `@disposableEmail(...)` only for Blade branching, not as a replacement for request validation.
 - Use `php artisan erag:install-disposable-email` before instructing users to edit `config/disposable-email.php`.
 - Use `php artisan erag:sync-disposable-email-list` when the task is about refreshing remote domain lists from configured sources.
-- Use `php scripts/update-built-in-domains.php` only when maintaining this package repository and updating the built-in `Email::domains()` source array.
+- Use `LaravelDisposableEmail\Data\BuiltInDomains::all()` when inspecting the built-in domain source.
 - Use `php artisan disposable:stats` when the task is about inspecting loaded domains, whitelist count, cache status, remote source count, or last synced time.
 - Treat `config('disposable-email.remote_url')` as the source of truth for sync inputs.
 - Treat `config('disposable-email.whitelist')` as the source of truth for trusted domains that should always pass.
@@ -36,7 +36,10 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 - The config file is `config/disposable-email.php`.
 - The default blacklist directory is `storage/app/blacklist_file`.
 - Remote sync sources are configured through `remote_url`.
-- The built-in `Email::domains()` source array is updated by `scripts/update-built-in-domains.php` from the canonical GitHub raw list.
+- Built-in domains are stored in `src/Data/BuiltInDomains.php` and exposed through `BuiltInDomains::all()`.
+- `DomainLoader` loads built-in and configured custom domains, while `DomainMatcher` handles exact and subdomain matching.
+- `DomainChecker` implements the `Checker` contract and returns the `Support\Result` object.
+- `Contracts\Loader`, `Contracts\Matcher`, and `Contracts\Checker` can be rebound to application-specific implementations.
 - Trusted domains are configured through `whitelist`.
 - Subdomain matching is configured through `block_subdomains`.
 - The package reads every `.txt` file in the configured blacklist directory.

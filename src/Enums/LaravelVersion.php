@@ -1,6 +1,6 @@
 <?php
 
-namespace EragLaravelDisposableEmail\Enums;
+namespace LaravelDisposableEmail\Enums;
 
 enum LaravelVersion: string
 {

@@ -36,7 +36,7 @@ class LaravelDisposableEmailServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Validator::extend('disposable_email', function ($attribute, $value, $parameters, $validator) {
-            $rule = new DisposableEmailRule;
+            $rule = new DisposableEmailRule(emailValidations: $parameters);
 
             $failCallback = function ($message) use (&$error) {
                 $error = $message;

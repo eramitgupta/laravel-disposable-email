@@ -8,7 +8,9 @@ use Closure;
 use EragLaravelDisposableEmail\Support\DisposableEmailResult;
 use EragLaravelDisposableEmail\Support\Email;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Translation\PotentiallyTranslatedString;
+use InvalidArgumentException;
 
 class DisposableEmailRule implements ValidationRule
 {
@@ -20,14 +22,33 @@ class DisposableEmailRule implements ValidationRule
     protected array $unauthorizedEmail;
 
     /**
+     * Email validation styles to apply before disposable email detection.
+     *
+     * @var array<int, string>
+     */
+    protected array $emailValidations;
+
+    /**
      * Create a new rule instance.
      *
      * @param  array<int, string>  $unauthorizedEmail
+     * @param  array<int, string>  $emailValidations
      */
     public function __construct(
-        array $unauthorizedEmail = []
+        array $unauthorizedEmail = [],
+        array $emailValidations = []
     ) {
         $this->unauthorizedEmail = empty($unauthorizedEmail) ? self::getDefaultUnauthorizedProviders() : $unauthorizedEmail;
+        $this->emailValidations = array_values(array_unique($emailValidations));
+
+        $unsupportedValidations = array_diff($this->emailValidations, self::supportedEmailValidations());
+
+        if ($unsupportedValidations !== []) {
+            throw new InvalidArgumentException(sprintf(
+                'Unsupported email validation parameter(s): %s.',
+                implode(', ', $unsupportedValidations)
+            ));
+        }
     }
 
     /**
@@ -37,6 +58,19 @@ class DisposableEmailRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if ($this->emailValidations !== []) {
+            $validator = Validator::make(
+                [$attribute => $value],
+                [$attribute => ['email:'.implode(',', $this->emailValidations)]]
+            );
+
+            if ($validator->fails()) {
+                $fail($validator->errors()->first($attribute));
+
+                return;
+            }
+        }
+
         $value = (string) $value;
         $value = strtolower(trim($value));
 
@@ -109,6 +143,16 @@ class DisposableEmailRule implements ValidationRule
     public static function make(): self
     {
         return self::rule();
+    }
+
+    /**
+     * Get the email validation styles supported by Laravel's email rule.
+     *
+     * @return array<int, string>
+     */
+    public static function supportedEmailValidations(): array
+    {
+        return ['rfc', 'strict', 'dns', 'spoof', 'filter', 'filter_unicode'];
     }
 
     public static function getDefaultUnauthorizedProviders(): array

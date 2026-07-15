@@ -52,3 +52,62 @@ it('can block subdomains according to configuration', function () {
     // Sub-domain is accepted as valid email
     expect(DisposableEmailRule($emailWithSubdomain))->passes()->toBeTrue();
 });
+
+it('applies Laravel email validation styles before disposable email detection', function (string $email, string $validation) {
+    $native = validator(
+        ['email' => $email],
+        ['email' => "email:{$validation}"]
+    );
+
+    $disposable = validator(
+        ['email' => $email],
+        ['email' => "disposable_email:{$validation}"]
+    );
+
+    expect($disposable->passes())->toBe($native->passes());
+})->with([
+    'rfc validation' => ['user@example.com', 'rfc'],
+    'strict validation' => ['user.@example.com', 'strict'],
+    'dns validation' => ['user@gmail.com', 'dns'],
+    'spoof validation' => ['user@еxample.com', 'spoof'],
+    'filter validation' => ['user@example.com', 'filter'],
+    'unicode filter validation' => ['user@example.com', 'filter_unicode'],
+]);
+
+it('supports multiple email validation styles', function () {
+    $native = validator(
+        ['email' => 'user@example.com'],
+        ['email' => 'email:rfc,filter']
+    );
+
+    $disposable = validator(
+        ['email' => 'user@example.com'],
+        ['email' => 'disposable_email:rfc,filter']
+    );
+
+    expect($disposable->passes())->toBe($native->passes());
+});
+
+it('ignores duplicate email validation styles', function () {
+    $withoutDuplicates = validator(
+        ['email' => 'user@example.com'],
+        ['email' => 'disposable_email:rfc,filter']
+    );
+
+    $withDuplicates = validator(
+        ['email' => 'user@example.com'],
+        ['email' => 'disposable_email:rfc,rfc,filter,filter']
+    );
+
+    expect($withDuplicates->passes())->toBe($withoutDuplicates->passes());
+});
+
+it('reports unsupported email validation styles', function () {
+    $validator = validator(
+        ['email' => 'user@example.com'],
+        ['email' => 'disposable_email:unknown']
+    );
+
+    expect(fn () => $validator->fails())
+        ->toThrow(InvalidArgumentException::class, 'Unsupported email validation parameter(s): unknown.');
+});

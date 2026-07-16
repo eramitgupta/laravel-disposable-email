@@ -2,34 +2,16 @@
 
 namespace EragLaravelDisposableEmail\Support;
 
-use EragLaravelDisposableEmail\Enums\LaravelVersion;
-use Illuminate\Support\Facades\Cache;
-
 class Email
 {
     public static function cache(string $cacheKey, callable $callback): mixed
     {
-        $ttl = config('disposable-email.cache_ttl');
-
-        if (version_compare(app()->version(), LaravelVersion::FLEXIBLE_CACHE->value, '>=')) {
-            return Cache::flexible(
-                $cacheKey,
-                [$ttl / 2, $ttl * 2],
-                $callback
-            );
-        }
-
-        return Cache::remember(
-            $cacheKey,
-            $ttl,
-            $callback
-        );
+        return Cache::remember($cacheKey, $callback);
     }
 
     public static function clearCache(): void
     {
-        Cache::forget('erag-unauthorized-email-providers');
-        Cache::forget('erag-unauthorized-email-provider-sources');
+        Cache::clear();
     }
 
     public static function domains(): array

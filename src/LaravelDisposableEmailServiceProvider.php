@@ -2,9 +2,9 @@
 
 namespace EragLaravelDisposableEmail;
 
-use EragLaravelDisposableEmail\Commands\DisposableEmailStats;
-use EragLaravelDisposableEmail\Commands\InstallDisposableEmail;
-use EragLaravelDisposableEmail\Commands\UpdateDisposableEmailList;
+use EragLaravelDisposableEmail\Commands\Install;
+use EragLaravelDisposableEmail\Commands\Stats;
+use EragLaravelDisposableEmail\Commands\Sync;
 use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
@@ -19,32 +19,30 @@ class LaravelDisposableEmailServiceProvider extends ServiceProvider
         );
 
         $this->commands([
-            DisposableEmailStats::class,
-            InstallDisposableEmail::class,
-            UpdateDisposableEmailList::class,
+            Stats::class,
+            Install::class,
+            Sync::class,
         ]);
 
         $this->publishes([
             __DIR__.'/../config/disposable-email.php' => config_path('disposable-email.php'),
         ], 'erag:publish-disposable-config');
 
-        $this->app->singleton('disposable-email', function ($app) {
+        $this->app->singleton('disposable-email', function () {
             return new DisposableEmailRule;
         });
     }
 
     public function boot(): void
     {
-        Validator::extend('disposable_email', function ($attribute, $value, $parameters, $validator) {
-            $rule = new DisposableEmailRule;
+        Validator::extend('disposable_email', function (string $attribute, mixed $value, array $parameters): bool {
+            $passes = true;
+            $rule = new DisposableEmailRule(modes: $parameters);
+            $rule->validate($attribute, $value, function () use (&$passes): void {
+                $passes = false;
+            });
 
-            $failCallback = function ($message) use (&$error) {
-                $error = $message;
-            };
-
-            $rule->validate($attribute, $value, $failCallback ?? fn () => null);
-
-            return empty($error);
+            return $passes;
         }, __('The :attribute belongs to an unauthorized email provider.'));
 
         Blade::if('disposableEmail', function (string $email) {

@@ -20,3 +20,14 @@ test('Disposable Facade Domain Check', function (string $email, bool $result) {
     'default blacklisted email' => [default_blacklisted_email(), true],
     'custom blacklisted email' => [custom_blacklisted_email(), true],
 ]);
+
+it('returns the matched source in detailed checks', function () {
+    $builtIn = Disposable::check('person@0-mail.com');
+    $custom = Disposable::check(custom_blacklisted_email());
+    $whitelist = Disposable::check(whitelisted_email());
+
+    expect($builtIn->source())->toBe('built-in')
+        ->and($custom->source())->toBe('custom')
+        ->and($whitelist->source())->toBe('whitelist')
+        ->and($whitelist->whitelisted())->toBeTrue();
+});

@@ -32,6 +32,7 @@ Read `reference.md` in this folder before making changes. It mirrors the current
 ## Implementation Notes
 
 - The package registers the string validation rule as `disposable_email`.
+- The string rule accepts optional Laravel email modes, such as `disposable_email:rfc,dns`.
 - The Blade conditional name is `disposableEmail`.
 - The config file is `config/disposable-email.php`.
 - The default blacklist directory is `storage/app/blacklist_file`.

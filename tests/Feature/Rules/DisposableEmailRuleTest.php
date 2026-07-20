@@ -1,5 +1,11 @@
 <?php
 
+use EragLaravelDisposableEmail\Rules\DisposableEmailRule;
+
+it('does not expose the removed deprecated method', function () {
+    expect(method_exists(DisposableEmailRule::class, 'isDisposable'))->toBeFalse();
+});
+
 test('validation passes with valid e-mail addresses')
     ->expect(fn ($email) => DisposableEmailRule($email))
     ->passes()

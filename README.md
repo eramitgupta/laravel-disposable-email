@@ -30,6 +30,7 @@ php artisan erag:install-disposable-email
 * 🔥 **110,880+ known disposable domains** already included
 * 🔄 Daily auto-sync from self-maintained Disposable Email Blocklist repository
 * 🧠 **Smart validation rule** for form requests
+* 🛡️ **Optional RFC, DNS, spoof, and filter validation** modes
 * ⚙️ **Runtime email checking** via helper and facade
 * 🧩 **Blade directive** support for conditionals
 * 🌐 **Auto-sync with remote domain lists**

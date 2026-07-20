@@ -66,6 +66,16 @@ $request->validate([
 ]);
 ```
 
+Optional RFC/DNS modes:
+
+```php
+$request->validate([
+    'email' => ['required', 'disposable_email:rfc,dns'],
+]);
+```
+
+Supported modes are `rfc`, `strict`, `dns`, `spoof`, `filter`, and `filter_unicode`. Modes may be used individually or comma-separated. Plain `disposable_email` keeps its existing domain-only behavior.
+
 Explicit rule object:
 
 ```php

@@ -11,7 +11,7 @@
 
 Laravel Disposable Email Detection is a Laravel package for detecting and blocking disposable email addresses during validation and runtime checks. It helps protect registrations, lead forms, and application workflows from temporary inbox abuse.
 
-> **Already contains 124,220+ disposable email domains!**
+> **Already contains 1,24,220+ disposable email domains!**
 
 ---
 

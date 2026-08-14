@@ -18,13 +18,13 @@ return [
     | Remote Source URL (Optional)
     |--------------------------------------------------------------------------
     |
-    | If you'd like to fetch a disposable domain list from a remote location,
-    | you can set that URL here and call the update command.
+    | The package includes a built-in domain list. Add one or more URLs here
+    | when you want to fetch additional or updated lists manually.
+    |
+    | Documentation: https://erag.in/laravel-disposable-email/
     |
     */
-    'remote_url' => [
-        'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt',
-    ],
+    'remote_url' => [],
 
     /*
     |--------------------------------------------------------------------------

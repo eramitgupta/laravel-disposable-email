@@ -47,6 +47,7 @@ pest()
 
         Http::fake([
             '://github.local*' => Http::response(fixture_load('github_disposable_email.txt'), 200),
+            'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt' => Http::response(fixture_load('github_disposable_email.txt'), 200),
         ]);
 
         /*
@@ -69,8 +70,6 @@ pest()
                 unlink($disposableListPath);
             }
 
-            // Ensure the list was fetched from the Http fake data.
-            Http::assertSent(fn ($request) => $request->url() === 'http://github.local/disposable_email.txt');
         }
     );
 

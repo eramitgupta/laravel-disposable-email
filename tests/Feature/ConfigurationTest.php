@@ -17,8 +17,28 @@ it('loads the built-in list over http and caches it for one day', function () {
     Http::assertSent(fn ($request): bool => str_contains($request->url(), 'raw.githubusercontent.com/eramitgupta/disposable-email'));
 });
 
+it('uses one http request for repeated built-in domain lookups', function () {
+    Http::fake([
+        '://github.local*' => Http::response(fixture_load('github_disposable_email.txt'), 200),
+        'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt' => Http::response(fixture_load('github_disposable_email.txt'), 200),
+    ]);
+
+    Email::clearCache();
+
+    Email::domains();
+    Email::domains();
+
+    $requests = Http::recorded(fn ($request): bool => str_contains(
+        $request->url(),
+        'raw.githubusercontent.com/eramitgupta/disposable-email'
+    ));
+
+    expect($requests)->toHaveCount(1);
+});
+
 it('returns the default list when the built-in http list fails', function () {
     Http::fake([
+        '://github.local*' => Http::response(fixture_load('github_disposable_email.txt'), 200),
         'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt' => Http::response('', 500),
     ]);
 
@@ -28,9 +48,12 @@ it('returns the default list when the built-in http list fails', function () {
 });
 
 it('returns the default list when the built-in http request throws', function () {
-    Http::fake(function (): never {
-        throw new RuntimeException('Connection failed.');
-    });
+    Http::fake([
+        '://github.local*' => Http::response(fixture_load('github_disposable_email.txt'), 200),
+        'https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt' => function (): never {
+            throw new RuntimeException('Connection failed.');
+        },
+    ]);
 
     Email::clearCache();
 

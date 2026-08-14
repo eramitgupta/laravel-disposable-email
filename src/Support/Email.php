@@ -2,6 +2,9 @@
 
 namespace EragLaravelDisposableEmail\Support;
 
+use Illuminate\Support\Facades\Http;
+use Throwable;
+
 class Email
 {
     public static function cache(string $cacheKey, callable $callback): mixed
@@ -15,6 +18,29 @@ class Email
     }
 
     public static function domains(): array
+    {
+        return Cache::remember(Cache::BUILT_IN, function (): array {
+            try {
+                $response = Http::timeout(30)->get('https://raw.githubusercontent.com/eramitgupta/disposable-email/main/disposable_email.txt');
+            } catch (Throwable) {
+                return self::defaultDomains();
+            }
+
+            if (! $response->successful()) {
+                return self::defaultDomains();
+            }
+
+            return array_values(array_unique([
+                ...self::defaultDomains(),
+                ...ResponseParser::parse($response->body()),
+            ]));
+        }, 86400);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public static function defaultDomains(): array
     {
         return ['0-mail.com', '027168.com', '0815.ru', '0815.ry', '0815.su', '0845.ru', '0box.eu', '0clickemail.com', '0n0ff.net', '0nelce.com', '0v.ro', '0w.ro',
             '0wnd.net', '0wnd.org', '0x207.info', '1-8.biz', '1-tm.com', '10-minute-mail.com', '1000rebates.stream',

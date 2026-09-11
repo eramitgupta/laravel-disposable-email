@@ -1,4 +1,4 @@
-# Laravel Disposable email address validator
+# Laravel Disposable Email Address Validator
 
 <div align="center">
 

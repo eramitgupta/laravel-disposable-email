@@ -1,4 +1,4 @@
-# Laravel Disposable Email Detection
+# Laravel Disposable email address validator
 
 <div align="center">
 

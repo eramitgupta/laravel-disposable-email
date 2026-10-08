@@ -60,17 +60,19 @@ pest()
         */
         artisan('erag:sync-disposable-email-list');
 
+        // Ensure the list was fetched from the Http fake data.
+        Http::assertSent(fn ($request) => $request->url() === 'http://github.local/disposable_email.txt');
+
     })->afterEach(
         function () {
-            // Clean up default list file
-            $disposableListPath = fixture('blacklist/disposable_email.txt');
+            // Clean up default list file and its sync lock file
+            $disposableListPath = fixture('blacklist').DIRECTORY_SEPARATOR.'disposable_email.txt';
 
-            if (file_exists($disposableListPath)) {
-                unlink($disposableListPath);
+            foreach ([$disposableListPath, $disposableListPath.'.lock'] as $path) {
+                if (is_file($path)) {
+                    unlink($path);
+                }
             }
-
-            // Ensure the list was fetched from the Http fake data.
-            Http::assertSent(fn ($request) => $request->url() === 'http://github.local/disposable_email.txt');
         }
     );
 

@@ -130,6 +130,17 @@ The sync process adds newly discovered domains without removing existing domains
 
 The upstream repository receives daily updates. Your Laravel application can receive those updates through local synchronization.
 
+### Sync Safeguards
+
+Your last known-good blocklist is never replaced or reduced by a bad remote response:
+
+- 🛡️ Failed requests, timeouts, HTTP errors, empty responses, HTML error pages, and lists without valid domains are rejected before any file is touched
+- ➕ Only new domains are appended; existing domains are always kept, even if the remote source removes them
+- 🔁 Domains are normalized and duplicates are skipped
+- ⚛️ Updates are written to a temporary file and atomically swapped in, so an interrupted sync never leaves a partial file
+- 🔒 Concurrent syncs are locked, so overlapping runs cannot lose or duplicate domains
+- 💤 When there are no new domains, the local file is left untouched
+
 ---
 
 ## Where Can You Use It?

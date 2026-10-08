@@ -29,7 +29,7 @@ Publish the configuration:
 php artisan erag:install-disposable-email
 ```
 
-* 🔥 **110,880+ known disposable domains** already included
+* 🔥 **1,24,220+ known disposable domains** already included
 * 🔄 Daily auto-sync from self-maintained Disposable Email Blocklist repository
 * 🧠 **Smart validation rule** for form requests
 * 🛡️ **Optional RFC, DNS, spoof, and filter validation** modes

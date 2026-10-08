@@ -1,6 +1,8 @@
 <?php
 
 use EragLaravelDisposableEmail\Commands\Sync;
+use Illuminate\Http\Client\Factory;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 it('updates emails database via artisan command')
@@ -37,6 +39,53 @@ it('creates safe filenames for remote urls', function () {
         ->toBe('disposable-domains.txt');
 });
 
+it('appends only remote domains missing from the local list', function () {
+    File::put(synced_list_path(), implode(PHP_EOL, ['zeta.test', 'local-only.test', 'alpha.test']).PHP_EOL);
+
+    fake_remote_response("alpha.test\nbeta.test\nzeta.test\ngamma.test");
+
+    $this->artisan('erag:sync-disposable-email-list')
+        ->expectsOutputToContain('Added 2 new domains')
+        ->assertExitCode(0);
+
+    expect(File::get(synced_list_path()))
+        ->toBe(implode(PHP_EOL, ['zeta.test', 'local-only.test', 'alpha.test', 'beta.test', 'gamma.test']).PHP_EOL);
+});
+
+it('does not duplicate domains when synced again', function () {
+    $original = File::get(synced_list_path());
+
+    $this->artisan('erag:sync-disposable-email-list')
+        ->expectsOutputToContain('No new domains found')
+        ->expectsOutputToContain('Sync complete. Synced: 1. Failed: 0.')
+        ->assertExitCode(0);
+
+    expect(File::get(synced_list_path()))->toBe($original);
+});
+
+it('compares remote domains with normalized local entries', function () {
+    File::put(synced_list_path(), "Alpha.TEST\nuser@beta.test\n");
+
+    fake_remote_response("alpha.test\nbeta.test\ngamma.test");
+
+    $this->artisan('erag:sync-disposable-email-list')
+        ->expectsOutputToContain('Added 1 new domains')
+        ->assertExitCode(0);
+
+    expect(File::get(synced_list_path()))->toBe("Alpha.TEST\nuser@beta.test\ngamma.test".PHP_EOL);
+});
+
+it('appends on a new line when the local list has no trailing newline', function () {
+    File::put(synced_list_path(), 'alpha.test');
+
+    fake_remote_response("alpha.test\nbeta.test");
+
+    $this->artisan('erag:sync-disposable-email-list')
+        ->assertExitCode(0);
+
+    expect(File::get(synced_list_path()))->toBe('alpha.test'.PHP_EOL.'beta.test'.PHP_EOL);
+});
+
 function sync_timeout(mixed $timeout = null): int
 {
     if (func_num_args() > 0) {
@@ -57,4 +106,19 @@ function sync_filename(string $url): string
     $method->setAccessible(true);
 
     return $method->invoke($command, $url);
+}
+
+/**
+ * Replace the default remote stub registered in tests/Pest.php, since
+ * stacked Http::fake() stubs resolve to the first registered match.
+ */
+function fake_remote_response(string $body): void
+{
+    Http::swap(new Factory);
+    Http::fake(['://github.local*' => Http::response($body)]);
+}
+
+function synced_list_path(): string
+{
+    return fixture('blacklist').DIRECTORY_SEPARATOR.'disposable_email.txt';
 }

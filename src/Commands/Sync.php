@@ -112,15 +112,25 @@ class Sync extends Command
         }
 
         $filePath = $directory.DIRECTORY_SEPARATOR.$this->filename($url);
+
         try {
-            $this->write($filePath, $domains);
+            $localList = File::exists($filePath) ? File::get($filePath) : '';
+            $newDomains = $this->newDomains($localList, $domains);
+
+            if ($newDomains === []) {
+                $this->info("No new domains found in [{$url}]. {$filePath} is already up to date.");
+
+                return true;
+            }
+
+            $this->append($filePath, $localList, $newDomains);
         } catch (Throwable $exception) {
             $this->error("Unable to write [{$filePath}]: {$exception->getMessage()}");
 
             return false;
         }
 
-        $this->info('Saved '.number_format(count($domains))." domains to {$filePath}");
+        $this->info('Added '.number_format(count($newDomains))." new domains to {$filePath}");
 
         return true;
     }
@@ -154,10 +164,35 @@ class Sync extends Command
     }
 
     /**
+     * Remote domains that are not yet in the local list.
+     *
+     * @param  array<int, string>  $remoteDomains
+     * @return array<int, string>
+     */
+    private function newDomains(string $localList, array $remoteDomains): array
+    {
+        $localDomains = array_flip(ResponseParser::parse($localList));
+
+        return array_values(array_filter(
+            $remoteDomains,
+            static fn (string $domain): bool => ! isset($localDomains[$domain])
+        ));
+    }
+
+    /**
+     * Append domains to the end of the local list without touching existing entries.
+     *
      * @param  array<int, string>  $domains
      */
-    private function write(string $path, array $domains): void
+    private function append(string $path, string $localList, array $domains): void
     {
-        File::put($path, implode(PHP_EOL, $domains).PHP_EOL);
+        $content = implode(PHP_EOL, $domains).PHP_EOL;
+
+        // Start on a fresh line when the existing list does not end with one.
+        if ($localList !== '' && ! str_ends_with($localList, "\n") && ! str_ends_with($localList, "\r")) {
+            $content = PHP_EOL.$content;
+        }
+
+        File::append($path, $content, true);
     }
 }

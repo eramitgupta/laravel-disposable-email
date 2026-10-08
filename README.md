@@ -7,8 +7,10 @@
 [![Laravel Compatibility](https://badge.laravel.cloud/badge/erag/laravel-disposable-email)](https://packagist.org/packages/erag/laravel-disposable-email)
 [![Total Downloads](https://img.shields.io/packagist/dt/erag/laravel-disposable-email.svg?label=Downloads)](https://packagist.org/packages/erag/laravel-disposable-email)
 
-</div>
 
+<a href="https://trendshift.io/repositories/16587?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-16587" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/16587/daily?language=PHP" alt="eramitgupta%2Flaravel-disposable-email | Trendshift" width="250" height="55"/></a>
+
+</div>
 Laravel Disposable email address validator is a Laravel package for detecting and blocking disposable email addresses during validation and runtime checks. It helps protect registrations, lead forms, and application workflows from temporary inbox abuse.
 
 > **Already contains 1,24,220+ disposable email domains!**

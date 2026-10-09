@@ -32,7 +32,10 @@ class Domain
 
     public static function isValid(string $domain): bool
     {
-        return preg_match('/^[a-z0-9.-]+\.[a-z]{2,}$/', $domain) === 1;
+        return preg_match(
+            '/^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/',
+            $domain,
+        ) === 1;
     }
 
     /**

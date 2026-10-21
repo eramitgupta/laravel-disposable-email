@@ -21,6 +21,10 @@ it('rejects malformed domains', function (string $domain) {
     'domain longer than 253 characters' => str_repeat('a.', 126).'com',
 ]);
 
+it('rejects domains with a trailing newline', function () {
+    expect(Domain::isValid("example.com\n"))->toBeFalse();
+});
+
 it('accepts valid domains at supported boundaries', function (string $domain) {
     expect(Domain::isValid($domain))->toBeTrue()
         ->and(Domain::normalize($domain))->toBe($domain);
